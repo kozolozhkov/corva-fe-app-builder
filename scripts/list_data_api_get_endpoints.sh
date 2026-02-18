@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROUTER_FILE="${1:-/Users/kzolozhkov/corva/core/data-api/app/api/v1/router.py}"
-DATA_FILE="${2:-/Users/kzolozhkov/corva/core/data-api/app/api/v1/data.py}"
-DATASET_FILE="${3:-/Users/kzolozhkov/corva/core/data-api/app/api/v1/dataset.py}"
+REPO_ROOT="${CORVA_REPO_ROOT:-$(pwd)}"
+ROUTER_FILE="${1:-$REPO_ROOT/data-api/app/api/v1/router.py}"
+DATA_FILE="${2:-$REPO_ROOT/data-api/app/api/v1/data.py}"
+DATASET_FILE="${3:-$REPO_ROOT/data-api/app/api/v1/dataset.py}"
 BASE_PREFIX="${CORVA_DATA_API_PREFIX:-/api/v1}"
 
 for file in "$ROUTER_FILE" "$DATA_FILE" "$DATASET_FILE"; do

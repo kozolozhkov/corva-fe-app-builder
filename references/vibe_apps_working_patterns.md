@@ -1,10 +1,10 @@
 # Vibe Apps Working Patterns
 
 ## Source Files
-- `/Users/kzolozhkov/corva/demos/vibe_coded_sample_app/src/App.tsx`
-- `/Users/kzolozhkov/corva/demos/vibe_coded_sample_app/src/effects/useWitsData.ts`
-- `/Users/kzolozhkov/corva/demos/vibe_coded_demo_app/src/App.tsx`
-- `/Users/kzolozhkov/corva/demos/vibe_coded_demo_app/src/effects/useRopData.ts`
+- `<repo-root>/demos/vibe_coded_sample_app/src/App.tsx`
+- `<repo-root>/demos/vibe_coded_sample_app/src/effects/useWitsData.ts`
+- `<repo-root>/demos/vibe_coded_demo_app/src/App.tsx`
+- `<repo-root>/demos/vibe_coded_demo_app/src/effects/useRopData.ts`
 
 ## Shared Flow
 

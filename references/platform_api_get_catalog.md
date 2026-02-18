@@ -1,12 +1,12 @@
 # Platform API GET Catalog
 
 ## Source File
-- `/Users/kzolozhkov/corva/core/corva-api/config/routes.rb`
+- `<repo-root>/corva-api/config/routes.rb`
 
 ## Regenerate Catalog
 
 Run:
-`/Users/kzolozhkov/.codex/skills/corva-fe-app-builder/scripts/list_platform_get_endpoints.sh`
+`CORVA_REPO_ROOT=<repo-root> <skill-root>/scripts/list_platform_get_endpoints.sh`
 
 ## v1 Metadata Endpoints (derived from routes)
 
@@ -74,4 +74,4 @@ Run:
 
 1. Use these endpoints for platform metadata resolution (asset/well/rig/user context) before data collection reads.
 2. Keep data reads on Data API (`/api/v1/data/...`), not on platform `v1 data` legacy paths.
-3. Prefer resource-specific methods from `/Users/kzolozhkov/corva/core/corva-ui/src/clients/jsonApi/index.js` where available.
+3. Prefer resource-specific methods from `<repo-root>/corva-ui/src/clients/jsonApi/index.js` where available.

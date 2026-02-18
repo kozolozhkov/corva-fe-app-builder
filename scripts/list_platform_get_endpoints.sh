@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROUTES_FILE="${1:-/Users/kzolozhkov/corva/core/corva-api/config/routes.rb}"
+REPO_ROOT="${CORVA_REPO_ROOT:-$(pwd)}"
+ROUTES_FILE="${1:-$REPO_ROOT/corva-api/config/routes.rb}"
 
 if [[ ! -f "$ROUTES_FILE" ]]; then
   echo "Missing file: $ROUTES_FILE" >&2

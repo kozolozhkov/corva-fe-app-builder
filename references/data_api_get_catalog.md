@@ -1,17 +1,17 @@
 # Data API GET Catalog
 
 ## Source Files
-- `/Users/kzolozhkov/corva/core/data-api/app/api/v1/router.py`
-- `/Users/kzolozhkov/corva/core/data-api/app/api/v1/data.py`
-- `/Users/kzolozhkov/corva/core/data-api/app/api/v1/dataset.py`
-- `/Users/kzolozhkov/corva/core/corva-ui/src/clients/jsonApi/index.js`
-- `/Users/kzolozhkov/corva/docs/codex-optimized/README.md`
-- `/Users/kzolozhkov/corva/docs/codex-optimized/datasets.json`
+- `<repo-root>/data-api/app/api/v1/router.py`
+- `<repo-root>/data-api/app/api/v1/data.py`
+- `<repo-root>/data-api/app/api/v1/dataset.py`
+- `<repo-root>/corva-ui/src/clients/jsonApi/index.js`
+- `<repo-root>/docs/codex-optimized/README.md`
+- `<repo-root>/docs/codex-optimized/datasets.json`
 
 ## Regenerate Catalog
 
 Run:
-`/Users/kzolozhkov/.codex/skills/corva-fe-app-builder/scripts/list_data_api_get_endpoints.sh`
+`CORVA_REPO_ROOT=<repo-root> <skill-root>/scripts/list_data_api_get_endpoints.sh`
 
 ## Route Truth (GET)
 
@@ -47,7 +47,7 @@ Default read shape for indexed time/depth collections:
 - explicit `sort` and bounded `limit`
 
 Use codex-optimized metadata first:
-- dataset group, keys, and field abbreviations live in `/Users/kzolozhkov/corva/docs/codex-optimized/datasets.json`
+- dataset group, keys, and field abbreviations live in `<repo-root>/docs/codex-optimized/datasets.json`
 - this file contains 87 datasets (`drilling` + `completions`)
 
 ## Timeseries Key Caveat
@@ -56,4 +56,4 @@ Even when codex metadata emphasizes `asset_id`, confirm live samples before fina
 Some datasets may key by nested metadata (for example `metadata.asset_id`) depending on provider pipeline/version.
 
 Use fallback sampling workflow:
-- `/Users/kzolozhkov/.codex/skills/corva-fe-app-builder/references/local_data_sampling_fallback.md`
+- `<skill-root>/references/local_data_sampling_fallback.md`

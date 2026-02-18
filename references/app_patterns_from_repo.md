@@ -1,20 +1,20 @@
 # App Patterns From Repo
 
 ## Source Files
-- `/Users/kzolozhkov/corva/demos/vibe_coded_sample_app/src/index.js`
-- `/Users/kzolozhkov/corva/demos/vibe_coded_sample_app/src/App.tsx`
-- `/Users/kzolozhkov/corva/demos/vibe_coded_sample_app/src/AppSettings.tsx`
-- `/Users/kzolozhkov/corva/demos/vibe_coded_sample_app/src/effects/useWitsData.ts`
-- `/Users/kzolozhkov/corva/demos/vibe_coded_demo_app/src/index.js`
-- `/Users/kzolozhkov/corva/demos/vibe_coded_demo_app/src/App.tsx`
-- `/Users/kzolozhkov/corva/demos/vibe_coded_demo_app/src/AppSettings.tsx`
-- `/Users/kzolozhkov/corva/demos/vibe_coded_demo_app/src/effects/useRopData.ts`
+- `<repo-root>/demos/vibe_coded_sample_app/src/index.js`
+- `<repo-root>/demos/vibe_coded_sample_app/src/App.tsx`
+- `<repo-root>/demos/vibe_coded_sample_app/src/AppSettings.tsx`
+- `<repo-root>/demos/vibe_coded_sample_app/src/effects/useWitsData.ts`
+- `<repo-root>/demos/vibe_coded_demo_app/src/index.js`
+- `<repo-root>/demos/vibe_coded_demo_app/src/App.tsx`
+- `<repo-root>/demos/vibe_coded_demo_app/src/AppSettings.tsx`
+- `<repo-root>/demos/vibe_coded_demo_app/src/effects/useRopData.ts`
 
 ## Proven Scaffold Shape
 
 1. Export app entry as default object with `component` + `settings`.
-`/Users/kzolozhkov/corva/demos/vibe_coded_sample_app/src/index.js`
-`/Users/kzolozhkov/corva/demos/vibe_coded_demo_app/src/index.js`
+`<repo-root>/demos/vibe_coded_sample_app/src/index.js`
+`<repo-root>/demos/vibe_coded_demo_app/src/index.js`
 
 2. Keep root default exports `App` and `AppSettings` unchanged (explicit warning comments in both apps).
 
@@ -23,8 +23,8 @@
 - `AppHeader`
 - `useAppCommons` for `appKey`
 From:
-`/Users/kzolozhkov/corva/demos/vibe_coded_sample_app/src/App.tsx`
-`/Users/kzolozhkov/corva/demos/vibe_coded_demo_app/src/App.tsx`
+`<repo-root>/demos/vibe_coded_sample_app/src/App.tsx`
+`<repo-root>/demos/vibe_coded_demo_app/src/App.tsx`
 
 4. Resolve asset from selected well list:
 - Build `wellsList` with `useMemo`
@@ -39,14 +39,14 @@ The app component handles rendering states; the hook handles API and subscriptio
 `const settings = { ...DEFAULT_SETTINGS, ...apiSettings };`
 - Update values via `onSettingChange(key, value)`.
 From:
-`/Users/kzolozhkov/corva/demos/vibe_coded_sample_app/src/AppSettings.tsx`
-`/Users/kzolozhkov/corva/demos/vibe_coded_demo_app/src/AppSettings.tsx`
+`<repo-root>/demos/vibe_coded_sample_app/src/AppSettings.tsx`
+`<repo-root>/demos/vibe_coded_demo_app/src/AppSettings.tsx`
 
 ## Data Hook Pattern
 
 From:
-- `/Users/kzolozhkov/corva/demos/vibe_coded_sample_app/src/effects/useWitsData.ts`
-- `/Users/kzolozhkov/corva/demos/vibe_coded_demo_app/src/effects/useRopData.ts`
+- `<repo-root>/demos/vibe_coded_sample_app/src/effects/useWitsData.ts`
+- `<repo-root>/demos/vibe_coded_demo_app/src/effects/useRopData.ts`
 
 Common flow:
 1. Exit early when `assetId` is missing.

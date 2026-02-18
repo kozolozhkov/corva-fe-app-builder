@@ -1,21 +1,21 @@
 # Client Method To Endpoint Map
 
 ## Source Files
-- `/Users/kzolozhkov/corva/core/corva-ui/src/clients/index.js`
-- `/Users/kzolozhkov/corva/core/corva-ui/src/clients/api/apiCore.js`
-- `/Users/kzolozhkov/corva/core/corva-ui/src/clients/jsonApi/index.js`
-- `/Users/kzolozhkov/corva/core/corva-ui/src/clients/utils.js`
+- `<repo-root>/corva-ui/src/clients/index.js`
+- `<repo-root>/corva-ui/src/clients/api/apiCore.js`
+- `<repo-root>/corva-ui/src/clients/jsonApi/index.js`
+- `<repo-root>/corva-ui/src/clients/utils.js`
 
 ## Core HTTP Clients
 
-1. `corvaAPI` (`/Users/kzolozhkov/corva/core/corva-ui/src/clients/index.js`)
+1. `corvaAPI` (`<repo-root>/corva-ui/src/clients/index.js`)
 - wraps `get/post/put/patch/del` with `CORVA_API_URLS.API`
 
-2. `corvaDataAPI` (`/Users/kzolozhkov/corva/core/corva-ui/src/clients/index.js`)
+2. `corvaDataAPI` (`<repo-root>/corva-ui/src/clients/index.js`)
 - wraps `get/post/put/patch/del` with `CORVA_API_URLS.DATA_API`
 - preferred for `/api/v1/data/...`
 
-3. `socketClient` (`/Users/kzolozhkov/corva/core/corva-ui/src/clients/index.js`)
+3. `socketClient` (`<repo-root>/corva-ui/src/clients/index.js`)
 - subscribe signature used in demos:
   `{ provider, dataset, assetId }`
 - internally maps `dataset` to `collection`
@@ -52,7 +52,7 @@ Used in working demos through `corvaDataAPI.get('/api/v1/data/...', params)`.
 
 ## Header/Token Behavior
 
-From `/Users/kzolozhkov/corva/core/corva-ui/src/clients/utils.js` and `apiCore.js`:
+From `<repo-root>/corva-ui/src/clients/utils.js` and `apiCore.js`:
 
 - Authorization header is attached from URL token or mobile session token (`getAuthorizationHeaders`).
 - App key header `x-corva-app` is attached when discovered from xprops or stack trace.

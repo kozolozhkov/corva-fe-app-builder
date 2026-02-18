@@ -1,23 +1,23 @@
 # MCP Usage From Repo
 
 ## Source Files
-- `/Users/kzolozhkov/corva/core/corva-ui/mcp-server/README.md`
-- `/Users/kzolozhkov/corva/core/corva-ui/.mcp.json`
-- `/Users/kzolozhkov/corva/core/corva-ui/mcp-server/src/server/tools/index.ts`
-- `/Users/kzolozhkov/corva/core/corva-ui/mcp-server/src/server/corva-ui-mcp-server.ts`
-- `/Users/kzolozhkov/corva/core/corva-ui/mcp-server/src/server/tools/search/search.ts`
-- `/Users/kzolozhkov/corva/core/corva-ui/mcp-server/src/server/tools/component-docs/component-docs.ts`
-- `/Users/kzolozhkov/corva/core/corva-ui/mcp-server/src/server/tools/hook-docs.ts`
-- `/Users/kzolozhkov/corva/core/corva-ui/mcp-server/src/server/tools/theme-docs.ts`
-- `/Users/kzolozhkov/corva/core/corva-ui/mcp-server/src/server/tools/list/list.ts`
-- `/Users/kzolozhkov/corva/core/corva-ui/mcp-server/src/server/tools/constants-docs.ts`
-- `/Users/kzolozhkov/corva/core/corva-ui/mcp-server/src/server/tools/client-docs.ts`
-- `/Users/kzolozhkov/corva/core/corva-ui/mcp-server/src/server/tools/diagnostics.ts`
+- `<repo-root>/corva-ui/mcp-server/README.md`
+- `<repo-root>/corva-ui/.mcp.json`
+- `<repo-root>/corva-ui/mcp-server/src/server/tools/index.ts`
+- `<repo-root>/corva-ui/mcp-server/src/server/corva-ui-mcp-server.ts`
+- `<repo-root>/corva-ui/mcp-server/src/server/tools/search/search.ts`
+- `<repo-root>/corva-ui/mcp-server/src/server/tools/component-docs/component-docs.ts`
+- `<repo-root>/corva-ui/mcp-server/src/server/tools/hook-docs.ts`
+- `<repo-root>/corva-ui/mcp-server/src/server/tools/theme-docs.ts`
+- `<repo-root>/corva-ui/mcp-server/src/server/tools/list/list.ts`
+- `<repo-root>/corva-ui/mcp-server/src/server/tools/constants-docs.ts`
+- `<repo-root>/corva-ui/mcp-server/src/server/tools/client-docs.ts`
+- `<repo-root>/corva-ui/mcp-server/src/server/tools/diagnostics.ts`
 
 ## Local Server Config In Repo
 
 Repo config file:
-`/Users/kzolozhkov/corva/core/corva-ui/.mcp.json`
+`<repo-root>/corva-ui/.mcp.json`
 
 Bootstrap helper command (from README):
 - `npx -p @corva/ui corva-ui-mcp-setup`
@@ -34,7 +34,7 @@ Example (`.mcp.json`):
 {
   "mcpServers": {
     "corva-ui": {
-      "command": "/Users/kzolozhkov/corva/core/node_modules/.bin/corva-ui-mcp"
+      "command": "<repo-root>/node_modules/.bin/corva-ui-mcp"
     }
   }
 }

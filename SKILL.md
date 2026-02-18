@@ -7,6 +7,12 @@ description: "Plan and scaffold Corva FE apps with friendly MCP-first @corva/ui 
 
 Use this skill to build Corva FE app plans and scaffolds with practical, proven implementation patterns.
 
+## Path Placeholders
+
+- `<repo-root>`: root of the Corva mono-repo/workspace that contains `corva-ui`, `docs`, `demos`, `data-api`, and `corva-api`.
+- `<app-root>`: target FE app folder (contains `package.json` and `.env.local`).
+- `<skill-root>`: installed `corva-fe-app-builder` skill folder (contains `SKILL.md`, `references/`, and `scripts/`).
+
 ## Communication Style (default)
 
 Assume mixed experience levels; default to clear plain language unless the user asks for deeper technical detail.
