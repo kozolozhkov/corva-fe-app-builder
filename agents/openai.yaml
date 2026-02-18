@@ -1,0 +1,7 @@
+interface:
+  display_name: "Corva FE App Builder"
+  short_description: "Plan and scaffold Corva FE apps with friendly MCP-first guidance, strict preflight checks, and clean one-question-at-a-time setup."
+  icon_small: "./assets/small-icon.png"
+  icon_large: "./assets/large-icon.png"
+  brand_color: "#0F766E"
+  default_prompt: "Use $corva-fe-app-builder to guide me in a friendly, easy-to-follow way from app idea to build steps with MCP/data preflight, asking setup questions one at a time, then auto-start the app server with yarn start and keep it running across iterations."
