@@ -133,6 +133,25 @@ TOKEN_PRESENT=0
 if [[ -f "$ENV_FILE" ]]; then
   pass ".env.local found"
 
+  file_mode=""
+  if stat -f "%Lp" "$ENV_FILE" >/dev/null 2>&1; then
+    file_mode="$(stat -f "%Lp" "$ENV_FILE")"
+  elif stat -c "%a" "$ENV_FILE" >/dev/null 2>&1; then
+    file_mode="$(stat -c "%a" "$ENV_FILE")"
+  fi
+
+  if [[ -n "$file_mode" ]]; then
+    if [[ "$file_mode" == "600" || "$file_mode" == "400" ]]; then
+      pass ".env.local permissions are restricted ($file_mode)"
+    else
+      if [[ "$STRICT" -eq 1 ]]; then
+        fail ".env.local permissions should be 600 or 400 (current: $file_mode)"
+      else
+        warn ".env.local permissions should be 600 or 400 (current: $file_mode)"
+      fi
+    fi
+  fi
+
   token_value="$(awk '
     /^[[:space:]]*CORVA_BEARER_TOKEN[[:space:]]*=/ {
       line=$0

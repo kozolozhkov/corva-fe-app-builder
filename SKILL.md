@@ -1,6 +1,10 @@
 ---
 name: corva-fe-app-builder
-description: "Scaffold and iterate Corva FE apps quickly with @corva/ui defaults, optional real-data wiring, and optional hardening checks. Use for new apps, widget screens, and mock-to-production upgrades."
+description: "Build and iterate Corva FE apps with @corva/ui defaults, optional real-data wiring, and optional hardening checks. This skill should be used when users ask to scaffold or upgrade Corva widgets/apps, including mock-to-production upgrades for drilling or completions views."
+metadata:
+  standard: agentskills-v1
+  compatibility: codex,claude-code,cursor,agentskills-hosts
+  primary-interface: SKILL.md
 ---
 
 # Corva FE App Builder
@@ -11,6 +15,15 @@ Use this skill to get from app idea to running Corva FE app quickly, then harden
 
 - `<app-root>`: target FE app folder (contains `package.json` and usually `.env.local`).
 - `<skill-root>`: installed `corva-fe-app-builder` skill folder (contains `SKILL.md`, `references/`, and `scripts/`).
+
+## Open Standard Compatibility
+
+This skill follows the open Agent Skills format commonly used by [skills.sh](https://skills.sh).
+
+1. Keep core workflow in `SKILL.md`, and keep deeper details in `references/`.
+2. Prefer capability names over host-specific tool aliases.
+3. Use `scripts/` as deterministic fallbacks when MCP aliases differ across hosts.
+4. Treat `agents/openai.yaml` as optional host metadata; it is not required by non-OpenAI hosts.
 
 ## Operating Modes
 
@@ -26,6 +39,13 @@ Default assumptions during setup:
 - `environment=prod` unless user instructs otherwise.
 - infer `collection` from the first prompt; only ask a single options question when confidence is low.
 
+## Token Security (mandatory)
+
+1. Never ask users to paste or send bearer tokens in chat.
+2. Require users to create/update `<app-root>/.env.local` locally and reply `ready`.
+3. Verify token presence by local file checks only (`.env.local` + `CORVA_BEARER_TOKEN`), never by asking for token text.
+4. Never echo token values in logs, code snippets, or responses.
+
 ## Communication Style
 
 Assume mixed experience levels; keep language plain and ask one question at a time.
@@ -37,10 +57,12 @@ Assume mixed experience levels; keep language plain and ask one question at a ti
 
 ## MCP Bootstrap Gate (run first)
 
-1. Run `mcp__corva_ui__get_diagnostics`.
+1. Run Corva UI diagnostics (`get_diagnostics` capability).
+- Codex alias: `mcp__corva_ui__get_diagnostics`
+- Other Agent Skills hosts (including Claude Code): use the host-specific alias for `corva_ui.get_diagnostics`.
 2. If diagnostics fail, run `npx -p @corva/ui corva-ui-mcp-setup`.
-3. If MCP config changed, ask for a full Codex restart, then run diagnostics again.
-4. Use Corva UI MCP tools directly (`list_corva_ui`, `search_corva_ui`, `get_component_docs`, `get_theme_docs`, etc.).
+3. If MCP config changed, ask for a full host restart (Codex/Claude Code/Cursor), then run diagnostics again.
+4. Use Corva UI MCP tools directly (`list_corva_ui`, `search_corva_ui`, `get_component_docs`, `get_theme_docs`, etc.) through host aliases.
 
 ## Fast-Start Workflow (default)
 

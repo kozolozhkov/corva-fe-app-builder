@@ -24,10 +24,12 @@ Put credentials in:
 If the file is missing, ask the user to add it first and include at least:
 - `CORVA_BEARER_TOKEN=<token>`
 
-Copy/paste starter template for users:
+Local-only setup helper (never ask user to paste token in chat):
 
 ```bash
-CORVA_BEARER_TOKEN=eyJhbGciOi...your_token_here...
+touch <app-root>/.env.local
+chmod 600 <app-root>/.env.local
+# Add CORVA_BEARER_TOKEN in your local editor
 ```
 
 Keep `.env.local` simple:
@@ -40,6 +42,7 @@ Provider note:
 
 If token is missing, explicitly state:
 `No bearer token is set yet. We can continue planning, but real data sampling is unavailable and field mapping will be inferred until a token is added.`
+Then ask for local setup completion only: `Please reply "ready" after you set CORVA_BEARER_TOKEN in .env.local locally.`
 
 Required runtime env vars for the fetch script:
 - `CORVA_BEARER_TOKEN`

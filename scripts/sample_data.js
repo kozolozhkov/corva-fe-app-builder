@@ -14,7 +14,6 @@ function usage() {
 
 Options:
   --app-root <path>          App root directory (default: current directory)
-  --token <token>            Bearer token (overrides env and .env.local)
   --base-url <url>           Data API base URL (required if env is not set)
   --provider <name>          Provider (default: corva)
   --collection <name>        Collection (required)
@@ -230,7 +229,11 @@ async function run() {
   const envFile = path.join(appRoot, '.env.local');
   const fileEnv = parseEnvFile(envFile);
 
-  const token = args.token || process.env.CORVA_BEARER_TOKEN || fileEnv.CORVA_BEARER_TOKEN;
+  if (Object.prototype.hasOwnProperty.call(args, 'token')) {
+    throw new Error('--token is disabled for security. Set CORVA_BEARER_TOKEN in .env.local locally.');
+  }
+
+  const token = process.env.CORVA_BEARER_TOKEN || fileEnv.CORVA_BEARER_TOKEN;
   const baseUrlRaw = args['base-url'] || process.env.CORVA_DATA_API_BASE_URL || fileEnv.CORVA_DATA_API_BASE_URL;
   const provider = args.provider || process.env.CORVA_PROVIDER || fileEnv.CORVA_PROVIDER || 'corva';
   const collection = args.collection || process.env.CORVA_COLLECTION || fileEnv.CORVA_COLLECTION;
@@ -243,7 +246,9 @@ async function run() {
   const fields = args.fields || '';
 
   if (!token) {
-    throw new Error('Missing bearer token. Pass --token or set CORVA_BEARER_TOKEN in .env.local.');
+    throw new Error(
+      'Missing bearer token in local environment. Set CORVA_BEARER_TOKEN in .env.local and re-run.'
+    );
   }
   if (!baseUrlRaw) {
     throw new Error('Missing base URL. Pass --base-url or set CORVA_DATA_API_BASE_URL.');

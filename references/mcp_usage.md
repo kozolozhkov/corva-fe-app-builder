@@ -2,6 +2,8 @@
 
 Use this when the workspace contains `corva-ui` source and MCP server files.
 
+This reference is host-agnostic for Agent Skills hosts (Codex, Claude Code, Cursor, and similar tools).
+
 ## Source Files
 - Bundled MCP tool model in this skill (default)
 - Optional source-workspace files if available
@@ -45,6 +47,17 @@ From `tools/index.ts` and server registration:
 - `get_client_docs`
 - `get_diagnostics`
 
+## Host Alias Mapping
+
+Use capability names first, then map to host aliases:
+
+1. Diagnostics capability: `get_diagnostics`
+- Codex alias: `mcp__corva_ui__get_diagnostics`
+- Claude Code / other hosts: use the alias exposed for `corva_ui.get_diagnostics`
+2. Catalog capability: `list_corva_ui`
+3. Search capability: `search_corva_ui`
+4. Docs capabilities: `get_component_docs`, `get_hook_docs`, `get_theme_docs`, `get_constants_docs`, `get_client_docs`
+
 ## Input Schema Summary
 
 1. `search_corva_ui`
@@ -85,14 +98,14 @@ From `tools/index.ts` and server registration:
 
 ## Server Health Bootstrap Gate
 
-1. Call `mcp__corva_ui__get_diagnostics`.
+1. Call Corva diagnostics (`get_diagnostics`) using the current host alias.
 2. If unavailable/timed out:
 - ensure `@corva/ui` is installed
 - run `npx -p @corva/ui corva-ui-mcp-setup`
 - normalize configs to local binary command (`node_modules/.bin/corva-ui-mcp`)
 The agent owns this recovery flow so the user does not need to manually start MCP.
-3. If config changed, require full Codex restart.
-4. After restart, call `mcp__corva_ui__get_diagnostics` again.
+3. If config changed, require full host restart (Codex/Claude Code/Cursor).
+4. After restart, call diagnostics again.
 5. Repeat diagnostics check after each iteration.
 
 ## Usage Boundary

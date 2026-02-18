@@ -9,6 +9,7 @@ Apply these rules for any local sample fetching flow.
 3. Restrict file permissions: `chmod 600 <app-root>/.env.local`.
 4. Use short-lived bearer tokens.
 5. Never print or log token values.
+6. Never ask users to paste token values in chat; ask them to edit `.env.local` locally and reply `ready`.
 
 ## Safe Execution Pattern
 
@@ -30,4 +31,5 @@ Only keep the token in `.env.local`. Pass non-secret runtime values inline.
 
 - Do not commit token-bearing files.
 - Do not paste token values into chat output.
+- Do not ask users to send token values over chat.
 - Do not run commands with shell tracing (`set -x`) when auth headers are present.

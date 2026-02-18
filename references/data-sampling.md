@@ -12,7 +12,7 @@ Fetch a real sample for the target `provider` + `collection` + `asset_id`, then 
 2. `provider` (default `corva`)
 3. `collection`
 4. `asset_id` (or explicit query override)
-5. Bearer token (from `<app-root>/.env.local` or `--token`)
+5. Bearer token from `<app-root>/.env.local` (or pre-exported `CORVA_BEARER_TOKEN` in local shell)
 
 ## Preferred Script
 
@@ -35,6 +35,11 @@ Optional overrides:
 - `--query-field metadata.asset_id` when the dataset is keyed there.
 - `--query-json '{"metadata.asset_id":123}'` for full custom query.
 - `--sort-json '{"timestamp":-1}'` to control ordering.
+
+Security rule:
+
+- Never ask user to paste token values in chat.
+- Ask user to set/update `.env.local` locally and reply `ready`.
 
 ## Reporting Contract (required when samples are fetched)
 

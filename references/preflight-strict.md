@@ -4,7 +4,7 @@ Use this reference when the run must meet strict reliability checks before codeg
 
 ## Before Build Checklist
 
-1. Confirm Corva UI MCP diagnostics pass (`mcp__corva_ui__get_diagnostics`).
+1. Confirm Corva UI MCP diagnostics pass (`get_diagnostics` capability; Codex alias is `mcp__corva_ui__get_diagnostics`).
 2. Confirm `<app-root>/.env.local` exists.
 3. Confirm `CORVA_BEARER_TOKEN` is set if real data sampling is required.
 4. Set defaults unless user says otherwise: `provider=corva`, `environment=prod`.
@@ -16,6 +16,9 @@ Use this reference when the run must meet strict reliability checks before codeg
 If token is missing, tell the user:
 
 `No bearer token is set yet. We can continue planning, but real data sampling is unavailable and field mapping will be inferred until a token is added.`
+Then ask the user to create/update `<app-root>/.env.local` locally and reply `ready`.
+
+Never ask the user to paste token values into chat.
 
 If `asset_id` is missing, tell the user:
 
@@ -30,15 +33,17 @@ If the app was built with mock/simulated data and `asset_id` is still missing, e
 Use this exact one-question-at-a-time order when strict setup is required:
 
 1. `Step 1/2: What is the asset_id for the target well/asset?`
-2. `Step 2/2: Please confirm .env.local exists in the app root and includes CORVA_BEARER_TOKEN (yes/no).`
+2. `Step 2/2: Please create or update .env.local locally so it contains CORVA_BEARER_TOKEN, then reply "ready" (do not paste the token in chat).`
 
-If step 2 is `no` or `unsure`, show:
+If the user is blocked on step 2, show:
 
 ```bash
-CORVA_BEARER_TOKEN=eyJhbGciOi...your_token_here...
+touch <app-root>/.env.local
+chmod 600 <app-root>/.env.local
+# Add CORVA_BEARER_TOKEN in your local editor (do not paste it in chat)
 ```
 
-Then ask: `Please reply "ready" after this is set.`
+Then ask: `Please reply "ready" after this is set locally.`
 
 Do not ask provider/environment by default.
 
@@ -74,7 +79,7 @@ If mock/simulated mode was used in the last iteration and `asset_id` is still mi
 
 Run before planning/code and after every iteration:
 
-1. MCP health (`mcp__corva_ui__get_diagnostics`).
+1. MCP health (`get_diagnostics` capability via host alias).
 2. Token check (`.env.local` + `CORVA_BEARER_TOKEN`).
 3. Context gate check (`environment`, `provider`, `asset_id`, `goal_intent`, `collection`) with defaults applied for provider/environment.
 4. Sampling check: if samples were fetched, verify field summary was presented and no-data state was explicit when applicable.

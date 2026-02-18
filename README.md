@@ -1,6 +1,13 @@
 # Corva FE App Builder Skill
 
-A Codex skill to scaffold and iterate Corva FE apps quickly, then harden when needed.
+An open-format Agent Skill to scaffold and iterate Corva FE apps quickly, then harden when needed.
+
+## Open Format Notes
+
+- follows the Agent Skills structure commonly used on [skills.sh](https://skills.sh)
+- keeps required entrypoint in `SKILL.md` with `name` + `description` frontmatter
+- stores procedural depth in `references/` and deterministic utilities in `scripts/`
+- keeps host metadata (`agents/openai.yaml`) optional so non-OpenAI hosts can ignore it
 
 ## What This Skill Optimizes For
 
@@ -21,14 +28,27 @@ Default behavior:
 - environment defaults to `prod`
 - collection is inferred from the first prompt, and the skill asks one options question only when inference confidence is low
 - if the app is built with mock data and `asset_id` is missing, the skill must end with one question asking for `asset_id` to rebuild with real-time Corva API data
+- token handling is local-file only: the skill must not ask users to paste tokens in chat, and instead asks users to set `CORVA_BEARER_TOKEN` in `.env.local` and reply `ready`
 
-## Use In Codex
+## Use In Hosts
 
 ```text
+# Codex
+$corva-fe-app-builder
+
+# Claude Code (same skill invocation style)
 $corva-fe-app-builder
 ```
 
-## Install In Codex
+## Install
+
+Place this folder in your host skill directory:
+
+- Codex: `$CODEX_HOME/skills/corva-fe-app-builder`
+- Claude Code: `~/.claude/skills/corva-fe-app-builder`
+- Other Agent Skills hosts: host-specific skills directory
+
+Codex helper install command:
 
 ```bash
 export CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
@@ -37,7 +57,7 @@ python3 "$CODEX_HOME/skills/.system/skill-installer/scripts/install-skill-from-g
   --url "https://github.com/<org-or-user>/<repo>/tree/main/<path>/corva-fe-app-builder"
 ```
 
-Restart Codex after installation or updates.
+Restart your host after installation or updates.
 
 ## Script Quickstart
 
@@ -107,7 +127,7 @@ corva-fe-app-builder/
 ## Update Workflow
 
 1. Edit `SKILL.md`, references, and scripts.
-2. Run skill validation:
+2. Run skill validation (example for Codex environments):
 
 ```bash
 python3 "$CODEX_HOME/skills/.system/skill-creator/scripts/quick_validate.py" \
@@ -115,4 +135,4 @@ python3 "$CODEX_HOME/skills/.system/skill-creator/scripts/quick_validate.py" \
 ```
 
 3. Commit and push changes.
-4. Reinstall/update skill copy and restart Codex.
+4. Reinstall/update skill copy and restart your host.
