@@ -1,26 +1,27 @@
 # Corva FE App Builder Skill
 
-A Codex skill for planning and scaffolding Corva FE apps with:
+A Codex skill to scaffold and iterate Corva FE apps quickly, then harden when needed.
 
-- MCP-first `@corva/ui` guidance
-- strict preflight and quality gates
-- one-question-at-a-time guided setup
-- collection mapping from natural-language intent
-- real sample validation with field-by-field summaries
-- enforced Corva styling compliance (theme tokens/components)
+## What This Skill Optimizes For
 
-## What This Skill Is For
+- fast app bootstrap with `@corva/ui` defaults
+- optional real-data wiring and schema checks
+- optional strict hardening before handoff
+- reusable scripts for preflight, runtime, and sampling
 
-Use this skill when you want Codex to build or iterate Corva FE apps in a consistent, production-oriented way, especially for:
+## Operating Modes
 
-- data-driven chart widgets
-- realtime + historical data flows
-- schema validation against sample data
-- style compliance with Corva UI theme standards
+1. `fast-start` (default): scaffold UI, use mock data when needed, start local app.
+2. `real-data`: resolve provider/collection/asset and validate with sample fetches.
+3. `hardening`: run strict preflight and styling/layout compliance checks.
+
+## Use In Codex
+
+```text
+$corva-fe-app-builder
+```
 
 ## Install In Codex
-
-Install from GitHub using the built-in skill installer:
 
 ```bash
 export CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
@@ -29,22 +30,42 @@ python3 "$CODEX_HOME/skills/.system/skill-installer/scripts/install-skill-from-g
   --url "https://github.com/<org-or-user>/<repo>/tree/main/<path>/corva-fe-app-builder"
 ```
 
-Restart Codex after installation.
+Restart Codex after installation or updates.
 
-## Usage
+## Script Quickstart
 
-In Codex, invoke:
+```bash
+# quick preflight (fast-start compatible)
+<skill-root>/scripts/preflight.sh --app-root <app-root>
 
-```text
-$corva-fe-app-builder
+# strict preflight (hardening)
+<skill-root>/scripts/preflight.sh \
+  --strict \
+  --app-root <app-root> \
+  --asset-id <asset_id> \
+  --provider <provider> \
+  --environment <qa|prod> \
+  --goal-intent "<goal>" \
+  --collection <collection>
+
+# ensure local dev server is running
+<skill-root>/scripts/start_or_restart_dev.sh --app-root <app-root>
+
+# fetch real sample + field summary
+<skill-root>/scripts/sample_data.js \
+  --app-root <app-root> \
+  --base-url <data_api_base_url> \
+  --provider <provider> \
+  --collection <collection> \
+  --asset-id <asset_id>
 ```
 
 ## Repository Structure
 
 ```text
 corva-fe-app-builder/
-├── SKILL.md                           # Skill contract and workflow (source of truth)
-├── agents/openai.yaml                 # Skill metadata for UI
+├── SKILL.md
+├── agents/openai.yaml
 ├── references/
 │   ├── app_scaffold_patterns.md
 │   ├── data_hook_patterns.md
@@ -55,10 +76,16 @@ corva-fe-app-builder/
 │   ├── local_data_sampling_fallback.md
 │   ├── security_local_token_rules.md
 │   ├── frontend-layout-guardrails.md
+│   ├── preflight-strict.md
+│   ├── data-sampling.md
+│   ├── styling-compliance.md
 │   └── dataset_descriptions/
 │       ├── README.md
 │       └── datasets.json
 ├── scripts/
+│   ├── preflight.sh
+│   ├── start_or_restart_dev.sh
+│   ├── sample_data.js
 │   ├── fetch_samples_with_env_token.sh
 │   ├── infer_field_presence.js
 │   ├── list_data_api_get_endpoints.sh
@@ -68,18 +95,20 @@ corva-fe-app-builder/
     └── large-icon.png
 ```
 
-## Path Placeholders Used In Docs
+## Path Placeholders
 
-- `<app-root>`: target FE app folder (contains `package.json` and `.env.local`)
-- `<skill-root>`: installed `corva-fe-app-builder` folder
+- `<app-root>`: target FE app folder (contains `package.json` and usually `.env.local`).
+- `<skill-root>`: installed `corva-fe-app-builder` folder.
 
-## Updating The Skill
+## Update Workflow
 
-1. Edit `SKILL.md` and related files in `references/` and `scripts/`.
-2. Commit and push.
-3. Teammates reinstall the skill from GitHub (or update local copy) and restart Codex.
+1. Edit `SKILL.md`, references, and scripts.
+2. Run skill validation:
 
-## Notes
+```bash
+python3 "$CODEX_HOME/skills/.system/skill-creator/scripts/quick_validate.py" \
+  "$CODEX_HOME/skills/corva-fe-app-builder"
+```
 
-- This skill is designed to work even when local demo/example apps are not available.
-- Bundled dataset metadata lives in `references/dataset_descriptions/datasets.json` and is used as the primary intent-to-collection mapping source.
+3. Commit and push changes.
+4. Reinstall/update skill copy and restart Codex.
