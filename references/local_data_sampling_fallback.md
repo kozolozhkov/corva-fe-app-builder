@@ -1,16 +1,15 @@
 # Local Data Sampling Fallback
 
-Use this only when repo docs and codex-optimized metadata are insufficient for field-level confidence.
+Use this only when the bundled dataset catalog and existing docs are insufficient for field-level confidence.
 
 ## Source Files
-- `docs/codex-optimized/README.md` (repo root)
-- `docs/codex-optimized/datasets.json` (repo root)
+- `<skill-root>/references/dataset_descriptions/datasets.json` (bundled)
 - `<skill-root>/scripts/fetch_samples_with_env_token.sh`
 - `<skill-root>/scripts/infer_field_presence.js`
 
-## Step 1: Prefer codex-optimized first
+## Step 1: Prefer dataset catalog first
 
-Check `docs/codex-optimized/datasets.json` (repo root) for:
+Check `<skill-root>/references/dataset_descriptions/datasets.json` for:
 - group (`drilling` / `completions`)
 - keys
 - known fields and types

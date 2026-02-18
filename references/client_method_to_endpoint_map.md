@@ -1,21 +1,17 @@
 # Client Method To Endpoint Map
 
-## Source Files
-- `<repo-root>/corva-ui/src/clients/index.js`
-- `<repo-root>/corva-ui/src/clients/api/apiCore.js`
-- `<repo-root>/corva-ui/src/clients/jsonApi/index.js`
-- `<repo-root>/corva-ui/src/clients/utils.js`
+This is a bundled client behavior reference for environments where only `<app-root>` and `<skill-root>` are available.
 
 ## Core HTTP Clients
 
-1. `corvaAPI` (`<repo-root>/corva-ui/src/clients/index.js`)
+1. `corvaAPI`
 - wraps `get/post/put/patch/del` with `CORVA_API_URLS.API`
 
-2. `corvaDataAPI` (`<repo-root>/corva-ui/src/clients/index.js`)
+2. `corvaDataAPI`
 - wraps `get/post/put/patch/del` with `CORVA_API_URLS.DATA_API`
 - preferred for `/api/v1/data/...`
 
-3. `socketClient` (`<repo-root>/corva-ui/src/clients/index.js`)
+3. `socketClient`
 - subscribe signature used in demos:
   `{ provider, dataset, assetId }`
 - internally maps `dataset` to `collection`
@@ -52,7 +48,7 @@ Common usage pattern: `corvaDataAPI.get('/api/v1/data/...', params)`.
 
 ## Header/Token Behavior
 
-From `<repo-root>/corva-ui/src/clients/utils.js` and `apiCore.js`:
+From the bundled client behavior model:
 
 - Authorization header is attached from URL token or mobile session token (`getAuthorizationHeaders`).
 - App key header `x-corva-app` is attached when discovered from xprops or stack trace.

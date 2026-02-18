@@ -1,17 +1,6 @@
 # Data API GET Catalog
 
-## Source Files
-- `<repo-root>/data-api/app/api/v1/router.py`
-- `<repo-root>/data-api/app/api/v1/data.py`
-- `<repo-root>/data-api/app/api/v1/dataset.py`
-- `<repo-root>/corva-ui/src/clients/jsonApi/index.js`
-- `<repo-root>/docs/codex-optimized/README.md`
-- `<repo-root>/docs/codex-optimized/datasets.json`
-
-## Regenerate Catalog
-
-Run:
-`CORVA_REPO_ROOT=<repo-root> <skill-root>/scripts/list_data_api_get_endpoints.sh`
+This is a bundled route-truth reference for environments where only `<app-root>` and `<skill-root>` are available.
 
 ## Route Truth (GET)
 
@@ -46,9 +35,9 @@ Default read shape for indexed time/depth collections:
 - `query={"asset_id": <asset_id>}`
 - explicit `sort` and bounded `limit`
 
-Use codex-optimized metadata first:
-- dataset group, keys, and field abbreviations live in `<repo-root>/docs/codex-optimized/datasets.json`
-- this file contains 87 datasets (`drilling` + `completions`)
+Use dataset metadata first:
+- primary source: `<skill-root>/references/dataset_descriptions/datasets.json`
+- use group, keys, and fields to rank candidate collections for the requested chart/widget intent
 
 ## Timeseries Key Caveat
 

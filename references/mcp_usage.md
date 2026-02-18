@@ -1,23 +1,15 @@
-# MCP Usage From Repo
+# MCP Usage and Bootstrap
+
+Use this when the workspace contains `corva-ui` source and MCP server files.
 
 ## Source Files
-- `<repo-root>/corva-ui/mcp-server/README.md`
-- `<repo-root>/corva-ui/.mcp.json`
-- `<repo-root>/corva-ui/mcp-server/src/server/tools/index.ts`
-- `<repo-root>/corva-ui/mcp-server/src/server/corva-ui-mcp-server.ts`
-- `<repo-root>/corva-ui/mcp-server/src/server/tools/search/search.ts`
-- `<repo-root>/corva-ui/mcp-server/src/server/tools/component-docs/component-docs.ts`
-- `<repo-root>/corva-ui/mcp-server/src/server/tools/hook-docs.ts`
-- `<repo-root>/corva-ui/mcp-server/src/server/tools/theme-docs.ts`
-- `<repo-root>/corva-ui/mcp-server/src/server/tools/list/list.ts`
-- `<repo-root>/corva-ui/mcp-server/src/server/tools/constants-docs.ts`
-- `<repo-root>/corva-ui/mcp-server/src/server/tools/client-docs.ts`
-- `<repo-root>/corva-ui/mcp-server/src/server/tools/diagnostics.ts`
+- Bundled MCP tool model in this skill (default)
+- Optional source-workspace files if available
 
 ## Local Server Config In Repo
 
 Repo config file:
-`<repo-root>/corva-ui/.mcp.json`
+`<workspace>/.mcp.json`
 
 Bootstrap helper command (from README):
 - `npx -p @corva/ui corva-ui-mcp-setup`
@@ -34,7 +26,7 @@ Example (`.mcp.json`):
 {
   "mcpServers": {
     "corva-ui": {
-      "command": "<repo-root>/node_modules/.bin/corva-ui-mcp"
+      "command": "<workspace>/node_modules/.bin/corva-ui-mcp"
     }
   }
 }
@@ -112,3 +104,4 @@ The agent owns this recovery flow so the user does not need to manually start MC
 
 - README states MCP support is available from `@corva/ui` `3.44.0`.
 - `get_client_docs` is the fastest way to inspect client methods + endpoint groupings before wiring data hooks.
+- Full source-workspace files are optional; this guide is usable with only `<app-root>` + `<skill-root>`.

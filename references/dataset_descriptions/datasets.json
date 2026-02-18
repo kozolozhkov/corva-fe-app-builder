@@ -1,0 +1,2076 @@
+{
+  "datasets": {
+    "activities": {
+      "desc": "Automated rig activity detection and classification data. This collection contains detected drilling activities with start/end times, duration, and associated depth changes. Activities are automatically classified based on real-time sensor data patterns and represent discrete operational periods during drilling.",
+      "doc": "drilling_datasets/activities.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.activity_name": "s",
+        "data.bit_depth": "f",
+        "data.bit_depth_change": "f",
+        "data.block_height": "f",
+        "data.block_height_change": "f",
+        "data.end_time": "l",
+        "data.hole_depth": "f",
+        "data.hole_depth_change": "f",
+        "data.operation_time": "i",
+        "data.shift_time": "o",
+        "data.shift_time.day": "i",
+        "data.shift_time.night": "i",
+        "data.start_time": "l",
+        "timestamp": "l"
+      },
+      "freq": "per_activity",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "data.start_time"
+      ],
+      "title": "Activities (Automated Rig Activity Detection)"
+    },
+    "anti-collision.alert": {
+      "desc": "Anti-collision alerts and warnings. This collection contains alerts generated when wellbore proximity thresholds are breached or collision risks are identified. Used for real-time collision avoidance during drilling operations.",
+      "doc": "drilling_datasets/anti_collision_alert.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.max_center_distance": "f",
+        "data.max_separation_factor": "f",
+        "data.offset_design_id": "s",
+        "data.offset_well_id": "s",
+        "data.offset_well_properties": "o",
+        "data.offset_wellbore_id": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_alert",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Anti-Collision Alert (Collision Warnings)"
+    },
+    "anti-collision.clearance": {
+      "desc": "Anti-collision clearance calculations between wellbores. This collection contains separation factor and center distance calculations between the current well and nearby offset wells, ensuring safe drilling distances are maintained.",
+      "doc": "drilling_datasets/anti_collision_clearance.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.max_center_distance": "f",
+        "data.max_separation_factor": "f",
+        "data.north_reference": "s",
+        "data.offset_design_id": "s",
+        "data.offset_well_id": "s",
+        "data.offset_well_properties": "o",
+        "data.offset_wellbore_id": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_update",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Anti-Collision Clearance (Wellbore Separation Calculations)"
+    },
+    "circulation.lag-depth": {
+      "desc": "Lag depth calculations for tracking where formation returns currently at surface originated from. This collection calculates the depth origin of cuttings currently being circulated to surface based on pump strokes and volumes.",
+      "doc": "drilling_datasets/circulation_lag_depth.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.bit_depth": "f",
+        "data.flow_rate": "f",
+        "data.lag_depth": "f",
+        "data.lag_strokes": "i",
+        "data.lag_time": "i",
+        "data.lag_volume": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_interval",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Circulation Lag Depth (Formation Returns Tracking)"
+    },
+    "circulation.volumetric": {
+      "desc": "Volumetric circulation data for tracking fluid volumes and circulation progress. This collection contains calculated volumes for circulating bottoms up, total system volumes, and pump strokes required to achieve circulation milestones.",
+      "doc": "drilling_datasets/circulation_volumetric.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.annular_volume": "f",
+        "data.current_lag_strokes": "i",
+        "data.drillstring_volume": "f",
+        "data.strokes_to_bottoms_up": "i",
+        "data.time_to_bottoms_up": "i",
+        "data.total_system_volume": "f",
+        "data.volume_to_bottoms_up": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_interval",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Circulation Volumetric (Circulation Volume Tracking)"
+    },
+    "completion.activity.summary-stage": {
+      "desc": "Stage-level activity summary providing a breakdown of activities performed during each frac stage. This collection contains detected activities with their timing, enabling analysis of time distribution across different phase of the frac treatment.",
+      "doc": "completions_datasets/completion_activity_summary_stage.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.activities": "a",
+        "stage_number": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_stage",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "stage_number"
+      ],
+      "title": "Completion Activity Summary Stage (Stage Activity Breakdown)"
+    },
+    "completion.data.actual-stages": {
+      "desc": "Actual executed stage data with measurements. This collection contains the actual results from completed frac stages including final volumes, proppant mass, pressures, and performance metrics.",
+      "doc": "completions_datasets/completion_data_actual_stages.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.actual_clean_volume": "f",
+        "data.actual_proppant": "f",
+        "data.actual_slurry_volume": "f",
+        "data.avg_rate": "f",
+        "data.isip": "f",
+        "data.max_pressure": "f",
+        "data.stage_duration": "i",
+        "stage_number": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_stage",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "stage_number"
+      ],
+      "title": "Completion Data Actual Stages (Executed Stage Data)"
+    },
+    "completion.data.costs": {
+      "desc": "Cost tracking data for completion operations. This collection contains cost entries for frac operations including daily costs, stage costs, and cost breakdowns.",
+      "doc": "completions_datasets/completion_data_costs.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.category": "s",
+        "data.cost": "f",
+        "data.date": "s",
+        "data.description": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_entry",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Completion Data Costs (Completion Cost Tracking)"
+    },
+    "completion.data.files": {
+      "desc": "File attachments and documents associated with completion operations. This collection contains metadata about files uploaded for completion wells including reports, treatment summaries, and analysis documents.",
+      "doc": "completions_datasets/completion_data_files.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.display_name": "s",
+        "data.file_name": "s",
+        "data.file_type": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_file",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Completion Data Files (Completion Documents)"
+    },
+    "completion.data.npt-events": {
+      "desc": "Non-productive time events during completion operations. This collection records downtime events during frac, wireline, and other completion operations that did not contribute to well progress.",
+      "doc": "completions_datasets/completion_data_npt_events.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.description": "s",
+        "data.duration": "i",
+        "data.end_time": "l",
+        "data.start_time": "l",
+        "data.type": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_event",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Completion Data NPT Events (Completion Non-Productive Time)"
+    },
+    "completion.data.stages": {
+      "desc": "Stage configuration and execution data. This collection contains the design and configuration parameters for each frac stage including target depths, cluster information, and design parameters.",
+      "doc": "completions_datasets/completion_data_stages.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.bottom_perf_md": "f",
+        "data.cluster_count": "i",
+        "data.design_clean_volume": "f",
+        "data.design_proppant": "f",
+        "data.top_perf_md": "f",
+        "stage_number": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_stage",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "stage_number"
+      ],
+      "title": "Completion Data Stages (Stage Configuration)"
+    },
+    "completion.data.time-log": {
+      "desc": "Completion operation time log data. This collection contains structured time entries for completion activities, similar to drilling timelogs but focused on completion operations.",
+      "doc": "completions_datasets/completion_data_time_log.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.activity": "s",
+        "data.duration": "i",
+        "data.end_time": "l",
+        "data.start_time": "l",
+        "timestamp": "l"
+      },
+      "freq": "per_entry",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Completion Data Time Log (Completion Timelog)"
+    },
+    "completion.metrics": {
+      "desc": "Completion operation calculated metrics and KPIs. This collection contains computed performance indicators for completion operations including efficiency metrics, time analysis, and stage performance summaries.",
+      "doc": "completions_datasets/completion_metrics.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.metric_key": "s",
+        "data.metric_type": "s",
+        "data.metric_value": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_well",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Completion Metrics (Calculated KPIs)"
+    },
+    "completion.offset": {
+      "desc": "Offset well pressure data during completion operations. This collection contains pressure readings from offset/neighboring wells during frac operations, enabling monitoring of frac hits and communication between wells.",
+      "doc": "completions_datasets/completion_offset.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.offset_pressure": "f",
+        "data.offset_well_id": "i",
+        "data.offset_well_name": "s",
+        "data.pressure_change": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_second",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Completion Offset (Offset Well Pressure Data)"
+    },
+    "completion.predictions": {
+      "desc": "Completion operation predictions and calculations. This collection contains predictive analytics and calculated values for frac operations including breakdown predictions, target ramp rates, and treatment analysis.",
+      "doc": "completions_datasets/completion_predictions.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.breakdown": "a",
+        "data.closure_pressure": "f",
+        "data.isip": "f",
+        "data.target_ramp_rate": "a",
+        "stage_number": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_stage",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "stage_number"
+      ],
+      "title": "Completion Predictions (Frac Predictions and Calculations)"
+    },
+    "completion.pumps": {
+      "desc": "Completion pump equipment data. This collection contains information about the frac pumps used during completion operations including pump specifications, configuration, and operating parameters.",
+      "doc": "completions_datasets/completion_pumps.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.pump_count": "i",
+        "data.pump_type": "s",
+        "data.pumps": "a",
+        "data.total_hhp": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_configuration",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Completion Pumps (Pump Equipment Data)"
+    },
+    "completion.stage-times": {
+      "desc": "Stage timing and duration data. This collection provides start time, end time, and duration for each frac stage, enabling time-based analysis and scheduling comparisons.",
+      "doc": "completions_datasets/completion_stage_times.md",
+      "fields": {
+        "app_key": "s",
+        "asset_id": "i",
+        "company_id": "i",
+        "data.stage_duration": "i",
+        "data.stage_end": "l",
+        "data.stage_start": "l",
+        "stage_number": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_stage",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "stage_number"
+      ],
+      "title": "Completion Stage Times (Stage Timing Data)"
+    },
+    "completion.tracking": {
+      "desc": "Completion operation tracking data. This collection tracks the overall progress and status of completion operations including current stage, operational state, and tracking metrics.",
+      "doc": "completions_datasets/completion_tracking.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.completion_type": "s",
+        "data.current_stage": "i",
+        "data.status": "s",
+        "data.total_stages": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_update",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Completion Tracking (Operational Tracking Data)"
+    },
+    "completion.valve": {
+      "desc": "Completion valve status and control data. This collection tracks valve positions, status changes, and control information during completion operations, particularly for zipper frac and simultaneous operations.",
+      "doc": "completions_datasets/completion_valve.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.last_change": "l",
+        "data.valve_id": "s",
+        "data.valve_position": "s",
+        "data.valve_status": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_change",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Completion Valve (Valve Status Data)"
+    },
+    "completion.wits": {
+      "desc": "Real-time completion WITS data from frac operations. This collection contains per-second sensor measurements during hydraulic fracturing operations including pump rates, pressures, proppant concentrations, and volumes. Essential for frac monitoring, treatment analysis, and real-time decision making.",
+      "doc": "completions_datasets/completion_wits.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.backside_pressure": "f",
+        "data.clean_flow_rate_in": "f",
+        "data.cumulative_chemicals": "o",
+        "data.elapsed_time": "i",
+        "data.hydraulic_horse_power": "f",
+        "data.slurry_flow_rate_in": "f",
+        "data.total_clean_volume_in": "f",
+        "data.total_proppant_concentration": "f",
+        "data.total_proppant_mass": "f",
+        "data.total_slurry_volume_in": "f",
+        "data.wellhead_pressure": "f",
+        "stage_number": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_second",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "stage_number"
+      ],
+      "title": "Completion WITS (Real-Time Frac Data)"
+    },
+    "completion.wits.raw": {
+      "desc": "Raw unprocessed completion WITS data. This collection contains the original data as received from frac data sources before any enrichment or standardization. Used for data quality checks, troubleshooting, and accessing original values before processing.",
+      "doc": "completions_datasets/completion_wits_raw.md",
+      "fields": {
+        "app": "s",
+        "asset_id": "i",
+        "company_id": "i",
+        "data": "o",
+        "source_app": "s",
+        "stage_number": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_second",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "stage_number"
+      ],
+      "title": "Completion WITS Raw (Unprocessed Frac Data)"
+    },
+    "completion.wits.summary-10s": {
+      "desc": "10-second aggregated completion WITS data. This collection provides statistical summaries (min, max, mean, median) of frac parameters over 10-second intervals, reducing data volume while preserving key statistics for analysis.",
+      "doc": "completions_datasets/completion_wits_summary_10s.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.end_timestamp": "l",
+        "data.max": "o",
+        "data.mean": "o",
+        "data.median": "o",
+        "data.min": "o",
+        "data.start_timestamp": "l",
+        "stage_number": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_10_seconds",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "stage_number"
+      ],
+      "title": "Completion WITS Summary 10s (10-Second Aggregated Data)"
+    },
+    "completion.wits.summary-1m": {
+      "desc": "1-minute aggregated completion WITS data. This collection provides statistical summaries of frac parameters over 1-minute intervals, further reducing data volume for longer-term trend analysis and historical reviews.",
+      "doc": "completions_datasets/completion_wits_summary_1m.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.end_timestamp": "l",
+        "data.max": "o",
+        "data.mean": "o",
+        "data.median": "o",
+        "data.min": "o",
+        "data.start_timestamp": "l",
+        "stage_number": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_minute",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "stage_number"
+      ],
+      "title": "Completion WITS Summary 1m (1-Minute Aggregated Data)"
+    },
+    "data.actual-survey": {
+      "desc": "Raw survey measurements from MWD (Measurement While Drilling) and LWD (Logging While Drilling) tools. This collection contains the actual directional survey data taken during drilling operations, representing the true position and trajectory of the wellbore. Survey data is collected at regular intervals and forms the basis for wellbore positioning and directional calculations.",
+      "doc": "drilling_datasets/data_actual_survey.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.surveys": "a",
+        "metadata.name": "s",
+        "metadata.survey_type": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_survey",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Actual Survey (Raw MWD/LWD Survey Data)"
+    },
+    "data.afe": {
+      "desc": "Authorization for Expenditure (AFE) data for well cost tracking. This collection contains the approved budget estimates for the well, typically expressed as cost vs depth or cost vs days curves. Essential for comparing actual drilling progress against planned budget milestones.",
+      "doc": "drilling_datasets/data_afe.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.afe_number": "s",
+        "data.afe_total": "f",
+        "data.cost": "f",
+        "data.currency": "s",
+        "data.days": "f",
+        "data.depth": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_well",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "AFE (Authorization for Expenditure)"
+    },
+    "data.casing": {
+      "desc": "Casing and liner data for wellbore construction. This collection contains information about the casing strings installed in the wellbore including conductor, surface casing, intermediate casing, production casing, and liners. Essential for wellbore integrity, hydraulics calculations, and completion planning.",
+      "doc": "drilling_datasets/data_casing.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.bottom_depth": "f",
+        "data.burst_pressure": "f",
+        "data.casing_type": "s",
+        "data.collapse_pressure": "f",
+        "data.connection": "s",
+        "data.grade": "s",
+        "data.id": "f",
+        "data.name": "s",
+        "data.od": "f",
+        "data.top_depth": "f",
+        "data.weight": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_casing",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Casing (Wellbore Casing and Liner Data)"
+    },
+    "data.costs": {
+      "desc": "Daily cost tracking data for well operations. This collection contains actual costs incurred during drilling operations, typically recorded daily with cost categories and descriptions. Essential for tracking well economics and comparing against AFE budgets.",
+      "doc": "drilling_datasets/data_costs.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.category": "s",
+        "data.cost": "f",
+        "data.currency": "s",
+        "data.date": "s",
+        "data.description": "s",
+        "data.vendor": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_day",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Costs (Daily Well Cost Tracking)"
+    },
+    "data.crews": {
+      "desc": "Crew information and shift data. This collection contains information about the rig crews, shift schedules, and personnel assignments. Used for attributing performance metrics to specific crews and analyzing operational patterns by shift.",
+      "doc": "drilling_datasets/data_crews.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.crew_type": "s",
+        "data.name": "s",
+        "data.shift_end": "s",
+        "data.shift_start": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_crew",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "data.name"
+      ],
+      "title": "Crews (Crew Information and Shifts)"
+    },
+    "data.drillstring": {
+      "desc": "Bottom hole assembly (BHA) and drillstring component data. This collection contains detailed information about the drill string configuration including all components from surface to bit - drill pipe, heavy weight, drill collars, stabilizers, motors, MWD/LWD tools, and bits. Essential for torque and drag calculations, hydraulics modeling, and operational planning.",
+      "doc": "drilling_datasets/data_drillstring.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.bha_number": "i",
+        "data.bit": "o",
+        "data.components": "a",
+        "data.motor": "o",
+        "data.name": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_bha",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Drillstring (BHA and Drill String Components)"
+    },
+    "data.files": {
+      "desc": "File attachments and documents associated with wells. This collection contains metadata about files uploaded and attached to well records, including reports, surveys, images, and other documentation.",
+      "doc": "drilling_datasets/data_files.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.category": "s",
+        "data.display_name": "s",
+        "data.file_name": "s",
+        "data.file_size": "i",
+        "data.file_type": "s",
+        "data.user": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_file",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "data.file_name"
+      ],
+      "title": "Files (Well Document Attachments)"
+    },
+    "data.formations": {
+      "desc": "Geological formation data for the wellbore. This collection contains information about the geological formations encountered during drilling, including formation tops, depths, and properties. Essential for geosteering, formation correlation, and drilling parameter optimization by formation.",
+      "doc": "drilling_datasets/data_formations.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.bottom_md": "f",
+        "data.formation_name": "s",
+        "data.lithology": "s",
+        "data.md": "f",
+        "data.source": "s",
+        "data.td": "f",
+        "data.thickness": "f",
+        "data.tvd": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_formation",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "data.formation_name"
+      ],
+      "title": "Formations (Geological Formation Data)"
+    },
+    "data.lessons-learned": {
+      "desc": "Lessons learned documentation from drilling operations. This collection captures knowledge and insights gained during drilling, including best practices, problem resolutions, and recommendations for future wells.",
+      "doc": "drilling_datasets/data_lessons_learned.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.category": "s",
+        "data.depth": "f",
+        "data.description": "s",
+        "data.recommendation": "s",
+        "data.title": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_entry",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Lessons Learned (Operational Knowledge Documentation)"
+    },
+    "data.mud": {
+      "desc": "Drilling fluid (mud) properties data. This collection contains information about the drilling fluid used during operations including mud weight, viscosity, fluid loss, and other rheological properties. Essential for hydraulics calculations, well control, and hole cleaning analysis.",
+      "doc": "drilling_datasets/data_mud.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.chlorides": "f",
+        "data.depth": "f",
+        "data.fluid_loss": "f",
+        "data.funnel_viscosity": "f",
+        "data.gel_strength_10m": "f",
+        "data.gel_strength_10s": "f",
+        "data.mud_type": "s",
+        "data.mud_weight": "f",
+        "data.oil_water_ratio": "s",
+        "data.ph": "f",
+        "data.plastic_viscosity": "f",
+        "data.solids_content": "f",
+        "data.yield_point": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_report",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Mud (Drilling Fluid Properties)"
+    },
+    "data.npt-events": {
+      "desc": "Non-Productive Time (NPT) events data. This collection records downtime events that do not contribute to well progress, including equipment failures, waiting on weather, stuck pipe incidents, well control events, and other operational delays. Essential for efficiency analysis and lessons learned.",
+      "doc": "drilling_datasets/data_npt_events.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.cause": "s",
+        "data.cost": "f",
+        "data.depth": "f",
+        "data.description": "s",
+        "data.duration": "i",
+        "data.end_time": "l",
+        "data.severity": "s",
+        "data.start_time": "l",
+        "data.subtype": "s",
+        "data.type": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_event",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "NPT Events (Non-Productive Time Events)"
+    },
+    "data.offset-wells": {
+      "desc": "Offset well configurations for comparison analysis. This collection defines which wells should be used as offsets or comparators for the current well, enabling performance benchmarking and geological correlation.",
+      "doc": "drilling_datasets/data_offset_wells.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.offset_well_ids": "a",
+        "data.offset_wells": "a",
+        "data.primary_offset": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_well",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Offset Wells (Comparison Well Configuration)"
+    },
+    "data.operation-summaries": {
+      "desc": "Daily operation summary reports. This collection contains summarized information about daily drilling operations, typically including footage drilled, activities performed, and operational highlights.",
+      "doc": "drilling_datasets/data_operation_summaries.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.24hr_summary": "s",
+        "data.current_activity": "s",
+        "data.current_depth": "f",
+        "data.daily_footage": "f",
+        "data.date": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_day",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Operation Summaries (Daily Operation Reports)"
+    },
+    "data.plan-survey": {
+      "desc": "Planned wellbore trajectory survey data. This collection contains the designed/planned well path that defines how the well should be drilled. The plan survey serves as the reference trajectory against which actual drilling progress is compared. It includes planned survey stations with target inclination, azimuth, and positional coordinates.",
+      "doc": "drilling_datasets/data_plan_survey.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.surveys": "a",
+        "metadata.name": "s",
+        "metadata.plan_type": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_plan",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Plan Survey (Planned Wellbore Trajectory)"
+    },
+    "data.pressure-gradient": {
+      "desc": "Pressure gradient profiles including pore pressure and fracture gradient data. This collection contains depth-based pressure profiles essential for mud weight selection, well control planning, and kick tolerance calculations.",
+      "doc": "drilling_datasets/data_pressure_gradient.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.pressure_points": "a",
+        "data.source": "s",
+        "data.units": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_well",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Pressure Gradient (Pore Pressure and Fracture Gradient)"
+    },
+    "data.surface-equipment": {
+      "desc": "Surface equipment configuration data. This collection contains information about the rig's surface equipment including top drive, rotary table, block, kelly bushing elevation, and other surface components relevant to drilling calculations.",
+      "doc": "drilling_datasets/data_surface_equipment.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.kelly_bushing_elevation": "f",
+        "data.max_hookload": "f",
+        "data.rig_name": "s",
+        "data.rotary_table_elevation": "f",
+        "data.top_drive_capacity": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_configuration",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Surface Equipment (Rig Surface Equipment Configuration)"
+    },
+    "data.well-sections": {
+      "desc": "Well section definitions for drilling operations. This collection defines the major sections of the well (e.g., Surface, Intermediate, Production Lateral) with their depth intervals, hole sizes, and associated parameters. Essential for segmenting performance analysis and organizing drilling data by phase.",
+      "doc": "drilling_datasets/data_well_sections.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.bottom_depth": "f",
+        "data.casing_size": "f",
+        "data.hole_size": "f",
+        "data.name": "s",
+        "data.sequence": "i",
+        "data.status": "s",
+        "data.top_depth": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_section",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "data.name"
+      ],
+      "title": "Well Sections (Drilling Section Definitions)"
+    },
+    "directional.accuracy": {
+      "desc": "The directional accuracy of the wellbore. Actual wellbore surveys are compared with the planned trajectory to determine the accuracy of the wellbore trajectory. The latest actual survey point and the corresponding planned survey point are available in this collection. The comparison is essentially the distance between the plan point and the actual survey. This can be center to center or in a particular plane. The comparison for all horizontal, vertical and minimum distance planes are available in the collection. General distance to plan, severity of the deviation and right/left or high/low is also available in the collection.",
+      "doc": "drilling_datasets/directional_accuracy.md",
+      "fields": {
+        "asset_id": "i",
+        "data.accuracy.distance_to_plan": "f",
+        "data.accuracy.severity": "s",
+        "data.actual_name": "s",
+        "data.actual_point": "o",
+        "data.actual_point.azimuth": "f",
+        "data.actual_point.easting": "f",
+        "data.actual_point.inclination": "f",
+        "data.actual_point.measured_depth": "f",
+        "data.actual_point.northing": "f",
+        "data.actual_point.tvd": "f",
+        "data.minimum_distance_plane": "o",
+        "data.minimum_distance_plane.actual_point": "o",
+        "data.minimum_distance_plane.actual_point.azimuth": "f",
+        "data.minimum_distance_plane.actual_point.easting": "f",
+        "data.minimum_distance_plane.actual_point.inclination": "f",
+        "data.minimum_distance_plane.actual_point.measured_depth": "f",
+        "data.minimum_distance_plane.actual_point.northing": "f",
+        "data.minimum_distance_plane.actual_point.tvd": "f",
+        "data.plan_name": "s",
+        "data.plan_point": "o",
+        "data.plan_point.azimuth": "f",
+        "data.plan_point.easting": "f",
+        "data.plan_point.inclination": "f",
+        "data.plan_point.measured_depth": "f",
+        "data.plan_point.northing": "f",
+        "data.plan_point.tvd": "f",
+        "data.points": "a",
+        "data.recommendation.high": "f",
+        "data.recommendation.left": "f",
+        "data.recommendation.low": "f",
+        "data.recommendation.right": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_survey",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Directional Accuracy (Wellbore Trajectory Comparison)"
+    },
+    "directional.guidance": {
+      "desc": "Directional drilling guidance recommendations generated by automated systems or predictive algorithms. This dataset provides recommended drilling parameters, toolface orientations, and steering instructions to help directional drillers keep the wellbore on target while optimizing drilling performance.",
+      "doc": "drilling_datasets/directional_guidance.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.build_needed": "f",
+        "data.confidence": "f",
+        "data.correction_urgency": "s",
+        "data.current_distance_to_plan": "f",
+        "data.model_version": "s",
+        "data.projected_distance_to_plan": "f",
+        "data.recommended_mode": "s",
+        "data.recommended_slide_length": "f",
+        "data.recommended_toolface": "f",
+        "data.target_azimuth": "f",
+        "data.target_depth": "f",
+        "data.target_inclination": "f",
+        "data.turn_needed": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_update",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Directional Guidance (Drilling Recommendations)"
+    },
+    "directional.projection": {
+      "desc": "Projected survey stations generated by Auto Projection Scheduler or Survey Projection Calculator. This collection contains forward projections of the wellbore trajectory based on current drilling parameters, toolface orientation, and motor yield. Projections help directional drillers anticipate where the wellbore will be at the next survey depth.",
+      "doc": "drilling_datasets/directional_projection.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.build_rate": "f",
+        "data.inputs": "o",
+        "data.inputs.projection_template": "o",
+        "data.inputs.projection_template.projection_template_id": "s",
+        "data.motor_yield": "f",
+        "data.projected_surveys": "a",
+        "data.toolface": "f",
+        "data.turn_rate": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_projection",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Directional Projection (Projected Survey Stations)"
+    },
+    "directional.slide-sheet": {
+      "desc": "Slide sheet data tracking sliding and rotating drilling activities. This collection records details about each slide and rotate section during directional drilling, including toolface orientation, footage drilled, motor yields, and build/turn rates. It provides essential data for directional drilling performance analysis and motor yield calculations.",
+      "doc": "drilling_datasets/directional_slide_sheet.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.build_rate": "f",
+        "data.duration": "i",
+        "data.end_azimuth": "f",
+        "data.end_depth": "f",
+        "data.end_inclination": "f",
+        "data.footage": "f",
+        "data.mode": "s",
+        "data.motor_yield": "f",
+        "data.rop": "f",
+        "data.slide_percentage": "f",
+        "data.start_azimuth": "f",
+        "data.start_depth": "f",
+        "data.start_inclination": "f",
+        "data.toolface": "f",
+        "data.toolface_type": "s",
+        "data.turn_rate": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_section",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Directional Slide Sheet (Slide/Rotate Tracking)"
+    },
+    "directional.surveys": {
+      "desc": "Enriched directional survey data with calculated values. This collection contains processed survey data with additional computed fields beyond the raw survey measurements. Surveys are taken at regular depth intervals during directional drilling to determine the wellbore position and trajectory.",
+      "doc": "drilling_datasets/directional_surveys.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.azimuth": "f",
+        "data.build_rate": "f",
+        "data.closure_direction": "f",
+        "data.closure_distance": "f",
+        "data.dogleg_severity": "f",
+        "data.easting": "f",
+        "data.inclination": "f",
+        "data.measured_depth": "f",
+        "data.northing": "f",
+        "data.turn_rate": "f",
+        "data.tvd": "f",
+        "data.vertical_section": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_survey",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Directional Surveys (Enriched Survey Data)"
+    },
+    "directional.tortuosity": {
+      "desc": "Wellbore tortuosity calculations measuring the deviation of the actual wellbore path from a smooth trajectory. Tortuosity affects drilling efficiency, causes increased drag and torque, and impacts completion operations. This dataset provides tortuosity metrics calculated from survey data to assess wellbore quality.",
+      "doc": "drilling_datasets/directional_tortuosity.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.cumulative_tortuosity": "f",
+        "data.dogleg_severity": "f",
+        "data.dogleg_severity_avg": "f",
+        "data.dogleg_severity_max": "f",
+        "data.macro_tortuosity": "f",
+        "data.measured_depth": "f",
+        "data.micro_tortuosity": "f",
+        "data.smoothness_index": "f",
+        "data.surveys": "a",
+        "data.tortuosity_index": "f",
+        "data.well_section": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_survey",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Directional Tortuosity (Wellbore Tortuosity Calculations)"
+    },
+    "directional.trend": {
+      "desc": "Directional trend analysis data providing time-series tracking of wellbore direction and position changes. This collection contains trend data showing how the wellbore trajectory is evolving over time, including toolface readings, inclination/azimuth changes, and positional trends useful for real-time directional monitoring.",
+      "doc": "drilling_datasets/directional_trend.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.azimuth_trend": "f",
+        "data.bit_depth": "f",
+        "data.continuous_azimuth": "f",
+        "data.continuous_inclination": "f",
+        "data.gravity_toolface": "f",
+        "data.inclination_trend": "f",
+        "data.magnetic_toolface": "f",
+        "data.measured_depth": "f",
+        "data.state": "s",
+        "data.toolface_trend": "f",
+        "data.tvd": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_interval",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Directional Trend (Wellbore Trend Analysis)"
+    },
+    "drilling.efficiency.mse": {
+      "desc": "Mechanical Specific Energy (MSE) calculations for drilling efficiency analysis. MSE represents the energy required to remove a unit volume of rock and is a key indicator of drilling efficiency. Lower MSE values generally indicate more efficient drilling.",
+      "doc": "drilling_datasets/drilling_efficiency_mse.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.bit_depth": "f",
+        "data.bit_diameter": "f",
+        "data.efficiency": "f",
+        "data.hole_depth": "f",
+        "data.mse": "f",
+        "data.mse_corrected": "f",
+        "data.rop": "f",
+        "data.rpm": "f",
+        "data.status": "s",
+        "data.torque": "f",
+        "data.wob": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_interval",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Drilling Efficiency MSE (Mechanical Specific Energy)"
+    },
+    "drilling.efficiency.mse-heatmap": {
+      "desc": "MSE heatmap data for visualizing drilling efficiency across parameter combinations. This dataset contains MSE values calculated across a matrix of WOB and RPM combinations, enabling identification of optimal drilling windows.",
+      "doc": "drilling_datasets/drilling_efficiency_mse_heatmap.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.heatmap_data": "a",
+        "data.hole_depth": "f",
+        "data.min_mse": "f",
+        "data.optimal_rpm": "f",
+        "data.optimal_wob": "f",
+        "data.rpm_bins": "a",
+        "data.wob_bins": "a",
+        "timestamp": "l"
+      },
+      "freq": "per_analysis",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Drilling Efficiency MSE Heatmap (MSE Parameter Analysis)"
+    },
+    "drilling.efficiency.optimization": {
+      "desc": "Drilling efficiency optimization data containing analyzed drilling parameters and optimization recommendations. This dataset provides insights into optimal drilling parameter combinations for maximizing ROP and minimizing MSE.",
+      "doc": "drilling_datasets/drilling_efficiency_optimization.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.current_rop": "f",
+        "data.current_rpm": "f",
+        "data.current_wob": "f",
+        "data.efficiency_gain": "f",
+        "data.expected_rop": "f",
+        "data.hole_depth": "f",
+        "data.recommended_rpm": "f",
+        "data.recommended_wob": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_analysis",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Drilling Efficiency Optimization (Parameter Optimization Data)"
+    },
+    "drilling.efficiency.rop-heatmap": {
+      "desc": "ROP heatmap data for visualizing rate of penetration across parameter combinations. This dataset contains ROP values calculated across a matrix of WOB and RPM combinations, enabling identification of parameter combinations that maximize drilling speed.",
+      "doc": "drilling_datasets/drilling_efficiency_rop_heatmap.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.heatmap_data": "a",
+        "data.hole_depth": "f",
+        "data.max_rop": "f",
+        "data.max_rop_rpm": "f",
+        "data.max_rop_wob": "f",
+        "data.rpm_bins": "a",
+        "data.wob_bins": "a",
+        "timestamp": "l"
+      },
+      "freq": "per_analysis",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Drilling Efficiency ROP Heatmap (ROP Parameter Analysis)"
+    },
+    "drilling.timelog-data": {
+      "desc": "Drilling timelog data for well optimization. This collection contains structured time entries documenting drilling activities, operations, and events in a format suitable for time analysis and well performance optimization.",
+      "doc": "drilling_datasets/drilling_timelog_data.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.activity": "s",
+        "data.category": "s",
+        "data.depth": "f",
+        "data.duration": "i",
+        "data.end_time": "l",
+        "data.start_time": "l",
+        "timestamp": "l"
+      },
+      "freq": "per_entry",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Drilling Timelog Data (Well Optimization Timelog)"
+    },
+    "drilling.wits-depth": {
+      "desc": "Depth-summarized WITS data for depth-based analysis. This collection contains drilling parameters indexed by measured depth rather than time, enabling depth-based correlations and formation analysis. Data is aggregated as the wellbore progresses, with each depth interval containing the associated drilling parameters.",
+      "doc": "drilling_datasets/drilling_wits_depth.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.diff_press": "f",
+        "data.gamma_ray": "f",
+        "data.rop": "f",
+        "data.rpm": "f",
+        "data.standpipe_pressure": "f",
+        "data.state": "s",
+        "data.torque": "f",
+        "data.tvd": "f",
+        "data.wob": "f",
+        "log_identifier": "s",
+        "measured_depth": "f",
+        "timestamp_read": "l"
+      },
+      "freq": "per_depth_increment",
+      "group": "drilling",
+      "keys": [
+        "timestamp_read",
+        "asset_id",
+        "measured_depth",
+        "log_identifier"
+      ],
+      "title": "Drilling WITS Depth (Depth-Indexed Drilling Data)"
+    },
+    "drilling.wits-depth.summary-1ft": {
+      "desc": "One-foot depth summary of WITS data for depth-based analysis. This collection provides aggregated drilling parameters at 1-foot depth intervals, similar to the time-based wits.summary-1ft but organized in the depth-based collection structure.",
+      "doc": "drilling_datasets/drilling_wits_depth_summary_1ft.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.gamma_ray": "f",
+        "data.rop": "f",
+        "data.rpm": "f",
+        "data.standpipe_pressure": "f",
+        "data.torque": "f",
+        "data.tvd": "f",
+        "data.wob": "f",
+        "log_identifier": "s",
+        "measured_depth": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_foot",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "measured_depth",
+        "log_identifier"
+      ],
+      "title": "Drilling WITS Depth Summary 1ft (1-Foot Depth Summary)"
+    },
+    "dysfunctions": {
+      "desc": "Drilling dysfunction detection events. This collection records detected drilling dysfunctions such as stick-slip, whirl, bit bounce, and other vibration-related issues that can damage equipment and reduce drilling efficiency.",
+      "doc": "drilling_datasets/dysfunctions.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.depth": "f",
+        "data.duration": "i",
+        "data.dysfunction_type": "s",
+        "data.severity": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_event",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Dysfunctions (Drilling Dysfunction Detection)"
+    },
+    "hydraulics.cuttings-transport": {
+      "desc": "Cuttings transport and hole cleaning calculations. This collection contains analysis of the ability to transport drill cuttings to surface based on flow rate, mud properties, hole geometry, and inclination. Essential for preventing stuck pipe and pack-offs.",
+      "doc": "drilling_datasets/hydraulics_cuttings_transport.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.annular_velocity": "f",
+        "data.critical_velocity": "f",
+        "data.cuttings_bed_height": "f",
+        "data.cuttings_transport_ratio": "f",
+        "data.depth_points": "a",
+        "data.flow_rate": "f",
+        "data.hole_cleaning_index": "f",
+        "data.required_flow_rate": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_interval",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Hydraulics Cuttings Transport (Hole Cleaning Analysis)"
+    },
+    "hydraulics.overview": {
+      "desc": "Hydraulics overview and summary data. This collection provides aggregated hydraulics information including PDM flowrate limits, recommended flowrates, and hole cleaning severity assessments. Used for dashboards and quick status checks of hydraulic conditions.",
+      "doc": "drilling_datasets/hydraulics_overview.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.hole_cleaning": "o",
+        "data.hole_cleaning.points": "a",
+        "data.hole_cleaning.severity": "s",
+        "data.hole_cleaning.value": "f",
+        "data.pdm_flowrate_limits": "o",
+        "data.pdm_flowrate_limits.max_standard_flowrate": "f",
+        "data.pdm_flowrate_limits.min_standard_flowrate": "f",
+        "data.recommended_minimum_flowrate": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_interval",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Hydraulics Overview (Hydraulics Summary Data)"
+    },
+    "hydraulics.pressure-loss": {
+      "desc": "Pressure loss calculations through drillstring and annulus. This collection contains calculated pressure losses at various points in the hydraulic system, including surface equipment, drillstring, bit, and annulus. Essential for monitoring equivalent circulating density (ECD), standpipe pressure predictions, and hydraulic optimization.",
+      "doc": "drilling_datasets/hydraulics_pressure_loss.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.activity": "s",
+        "data.annulus_pressure_loss": "f",
+        "data.bit_depth": "f",
+        "data.bit_pressure_loss": "f",
+        "data.drillstring_pressure_loss": "f",
+        "data.ecd": "f",
+        "data.flow_rate": "f",
+        "data.hole_depth": "f",
+        "data.predicted_standpipe_pressure": "f",
+        "data.surface_pressure_loss": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_interval",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Hydraulics Pressure Loss (Drillstring and Annulus Pressure)"
+    },
+    "hydraulics.pressure-trend": {
+      "desc": "Pressure trend analysis for monitoring circulating pressure behavior over time. This collection tracks standpipe pressure trends to identify changes that may indicate downhole issues such as washouts, plugged nozzles, or formation changes.",
+      "doc": "drilling_datasets/hydraulics_pressure_trend.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.baseline_pressure": "f",
+        "data.flow_rate": "f",
+        "data.predicted_pressure": "f",
+        "data.pressure_deviation": "f",
+        "data.standpipe_pressure": "f",
+        "data.trend_direction": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_interval",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Hydraulics Pressure Trend (Circulating Pressure Trends)"
+    },
+    "hydraulics.surge-and-swab": {
+      "desc": "Surge and swab pressure calculations for tripping operations. This collection contains calculated pressure variations caused by pipe movement during tripping in and out of the hole. Critical for well control and preventing formation damage or kicks during tripping operations.",
+      "doc": "drilling_datasets/hydraulics_surge_and_swab.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.bit_depth": "f",
+        "data.depth_points": "a",
+        "data.hole_depth": "f",
+        "data.max_safe_trip_in_speed": "f",
+        "data.max_safe_trip_out_speed": "f",
+        "data.surge_ecd": "f",
+        "data.surge_pressure": "f",
+        "data.swab_ecd": "f",
+        "data.swab_pressure": "f",
+        "data.trip_speed": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_interval",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Hydraulics Surge and Swab (Tripping Pressure Calculations)"
+    },
+    "kick-detection": {
+      "desc": "Kick detection and well control monitoring data. This collection contains real-time kick detection analysis monitoring for influx of formation fluids into the wellbore. Essential for well control and early kick detection.",
+      "doc": "drilling_datasets/kick_detection.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.active_string_id": "s",
+        "data.active_string_type": "s",
+        "data.drillstring_number": "i",
+        "data.warning": "o",
+        "timestamp": "l"
+      },
+      "freq": "per_second",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Kick Detection (Well Control Monitoring)"
+    },
+    "metrics": {
+      "desc": "Calculated drilling metrics and Key Performance Indicators (KPIs) for wells. This collection stores computed metrics at various aggregation levels (well, well section, BHA, etc.) including performance indicators like ROP averages, connection counts, and efficiency metrics. Metrics are typically calculated by background apps and used for dashboards, leaderboards, and performance comparisons.",
+      "doc": "drilling_datasets/metrics.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.asset_id": "i",
+        "data.basin": "s",
+        "data.company_id": "i",
+        "data.key": "s",
+        "data.mud_type": "s",
+        "data.program_id": "i",
+        "data.rig_id": "i",
+        "data.segment": "s",
+        "data.type": "s",
+        "data.value": "f",
+        "data.well_section": "s",
+        "metadata": "o",
+        "metadata.timezone": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_metric",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "data.key",
+        "data.type"
+      ],
+      "title": "Metrics (Calculated Drilling KPIs)"
+    },
+    "operations": {
+      "desc": "High-level drilling operations data categorizing rig activities into major operation types such as drilling, tripping, circulating, and other operational phases. This dataset provides aggregated operation periods with detailed performance metrics, depth tracking, and ROP (Rate of Penetration) analysis.",
+      "doc": "drilling_datasets/operations.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.bha_id": "i",
+        "data.bit_depth_change": "f",
+        "data.block_height_change": "f",
+        "data.depth_change": "f",
+        "data.end_bit_depth": "f",
+        "data.end_block_height": "f",
+        "data.end_depth": "f",
+        "data.end_timestamp": "l",
+        "data.hole_size": "f",
+        "data.operation": "s",
+        "data.operation_name": "s",
+        "data.operation_time": "i",
+        "data.performance": "o",
+        "data.performance.rotary_depth_change": "f",
+        "data.performance.rotary_percentage": "f",
+        "data.performance.rotary_rop": "f",
+        "data.performance.slide_depth_change": "f",
+        "data.performance.slide_percentage": "f",
+        "data.performance.slide_rop": "f",
+        "data.performance.total_rop": "f",
+        "data.rop_variability": "o",
+        "data.shift": "s",
+        "data.start_bit_depth": "f",
+        "data.start_block_height": "f",
+        "data.start_depth": "f",
+        "data.start_timestamp": "l",
+        "data.well_section": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_operation",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "data.operation",
+        "data.start_timestamp"
+      ],
+      "title": "Operations (High-Level Drilling Operations)"
+    },
+    "pdm.operating-condition": {
+      "desc": "PDM operating condition monitoring data providing detailed motor operating parameters. This collection contains real-time PDM performance metrics including flow rate, differential pressure, torque output, RPM, and operating limits for motor optimization and protection.",
+      "doc": "drilling_datasets/pdm_operating_condition.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.bit_depth": "f",
+        "data.differential_pressure": "f",
+        "data.flow_rate": "f",
+        "data.hole_depth": "f",
+        "data.limits": "o",
+        "data.pdm_power": "f",
+        "data.rpm": "f",
+        "data.torque": "f",
+        "data.torque_line": "a",
+        "data.total_bit_rpm": "f",
+        "data.total_bit_torque": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_interval",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "PDM Operating Condition (Motor Operating Parameters)"
+    },
+    "pdm.overview": {
+      "desc": "PDM (Positive Displacement Motor / Drilling Motor) performance overview data. This collection provides summary metrics for mud motor performance including differential pressure status, severity indicators, and trend data for monitoring motor health during drilling operations.",
+      "doc": "drilling_datasets/pdm_overview.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.differential_pressure": "o",
+        "data.differential_pressure.percentage": "f",
+        "data.differential_pressure.points": "a",
+        "data.differential_pressure.severity": "s",
+        "data.differential_pressure.value": "f",
+        "data.status": "i",
+        "data.warning": "o",
+        "timestamp": "l"
+      },
+      "freq": "per_interval",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "PDM Overview (Motor Performance Summary)"
+    },
+    "pdm.stall-detection": {
+      "desc": "PDM stall detection events and analysis. This collection records motor stall events detected during drilling, including stall characteristics and conditions that led to the stall. Used for motor protection, drilling optimization, and post-run analysis.",
+      "doc": "drilling_datasets/pdm_stall_detection.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.bit_depth": "f",
+        "data.differential_pressure": "f",
+        "data.duration": "i",
+        "data.flow_rate": "f",
+        "data.hole_depth": "f",
+        "data.total_bit_torque": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_event",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "PDM Stall Detection (Motor Stall Events)"
+    },
+    "pumpdown.activity.summary-stage": {
+      "desc": "Stage-level pumpdown activity summary providing activity breakdown during pumpdown operations per stage.",
+      "doc": "completions_datasets/pumpdown_activity_summary_stage.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.activities": "a",
+        "stage_number": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_stage",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "stage_number"
+      ],
+      "title": "Pumpdown Activity Summary Stage (Pumpdown Activity Breakdown)"
+    },
+    "pumpdown.predictions": {
+      "desc": "Pumpdown operation predictions and plug tracking calculations. This collection contains predictive analytics for pumpdown operations including estimated time to set, ball/plug position predictions, and expected pressure responses.",
+      "doc": "completions_datasets/pumpdown_predictions.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.predicted_ball_depth": "f",
+        "data.predicted_set_time": "l",
+        "data.time_to_set": "i",
+        "stage_number": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_calculation",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "stage_number"
+      ],
+      "title": "Pumpdown Predictions (Plug Tracking Predictions)"
+    },
+    "pumpdown.wits": {
+      "desc": "Real-time WITS data for pumpdown operations. This collection contains sensor measurements during plug deployment and pumpdown operations, tracking pump rates, pressures, and ball/dart status as plugs are pumped to setting depth.",
+      "doc": "completions_datasets/pumpdown_wits.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.ball_depth": "f",
+        "data.plug_status": "s",
+        "data.pump_rate": "f",
+        "data.total_volume": "f",
+        "data.wellhead_pressure": "f",
+        "stage_number": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_second",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "stage_number"
+      ],
+      "title": "Pumpdown WITS (Real-Time Pumpdown Data)"
+    },
+    "pumpdown.wits.summary-1m": {
+      "desc": "1-minute aggregated pumpdown WITS data. This collection provides statistical summaries of pumpdown parameters over 1-minute intervals for trend analysis.",
+      "doc": "completions_datasets/pumpdown_wits_summary_1m.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.max": "o",
+        "data.mean": "o",
+        "data.min": "o",
+        "stage_number": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_minute",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "stage_number"
+      ],
+      "title": "Pumpdown WITS Summary 1m (1-Minute Pumpdown Data)"
+    },
+    "timelog-data": {
+      "desc": "General timelog data for time analysis. This collection contains time-based activity logs that can be used for analyzing operational time distribution and identifying opportunities for efficiency improvements.",
+      "doc": "drilling_datasets/timelog_data.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.activity": "s",
+        "data.depth": "f",
+        "data.duration": "i",
+        "data.end_time": "l",
+        "data.start_time": "l",
+        "timestamp": "l"
+      },
+      "freq": "per_entry",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Timelog Data (General Time Analysis)"
+    },
+    "torque-and-drag.axial-load": {
+      "desc": "Axial load calculations along the drillstring. This collection contains calculated axial loads at each point along the drill string, including buckling force thresholds for sinusoidal and helical buckling. Essential for drillstring design verification and buckling prevention.",
+      "doc": "drilling_datasets/torque_and_drag_axial_load.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.activity": "s",
+        "data.points": "a",
+        "timestamp": "l"
+      },
+      "freq": "per_calculation",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Torque and Drag Axial Load (String Tension Analysis)"
+    },
+    "torque-and-drag.friction-factor": {
+      "desc": "Friction factor calculations for torque and drag modeling. This collection contains predicted and actual friction factors for casing and open hole sections, used to calibrate T&D models and identify changes in wellbore conditions.",
+      "doc": "drilling_datasets/torque_and_drag_friction_factor.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.casing_depth": "f",
+        "data.current_usage": "o",
+        "data.hole_depth": "f",
+        "data.predicted": "o",
+        "data.status": "i",
+        "data.usage_type": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_calibration",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Torque and Drag Friction Factor (Wellbore Friction)"
+    },
+    "torque-and-drag.hookload-trend": {
+      "desc": "Hookload trend analysis for torque and drag monitoring. This collection contains calculated hookload curves (broomstick charts) for different operations like slack-off and pick-up at various friction factors, enabling comparison with actual hookload measurements.",
+      "doc": "drilling_datasets/torque_and_drag_hookload_trend.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.config": "o",
+        "data.curves": "o",
+        "data.curves.pick_up": "a",
+        "data.curves.slack_off": "a",
+        "data.hole_depth": "f",
+        "data.is_extended": "b",
+        "timestamp": "l"
+      },
+      "freq": "per_update",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Torque and Drag Hookload Trend (Hookload Broomstick Data)"
+    },
+    "torque-and-drag.overview": {
+      "desc": "Torque and drag calculation overview providing summary metrics for weight transfer efficiency and drag severity. This collection contains high-level T&D indicators and trend data used for dashboards and quick status assessments of drilling string mechanics.",
+      "doc": "drilling_datasets/torque_and_drag_overview.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.activity": "s",
+        "data.drag": "o",
+        "data.drag.points": "a",
+        "data.drag.severity": "s",
+        "data.drag.value": "f",
+        "data.weight_on_bit": "o",
+        "data.weight_on_bit.difference": "f",
+        "data.weight_on_bit.latch": "f",
+        "data.weight_on_bit.model": "f",
+        "data.weight_transfer": "s",
+        "timestamp": "l"
+      },
+      "freq": "per_interval",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Torque and Drag Overview (T&D Summary Data)"
+    },
+    "torque-and-drag.predictions": {
+      "desc": "Torque and drag predictions for drilling optimization. This collection contains real-time predicted values for hookload and surface torque based on current drilling conditions, enabling comparison with actual measurements for anomaly detection.",
+      "doc": "drilling_datasets/torque_and_drag_predictions.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.activity": "s",
+        "data.bit_depth": "f",
+        "data.bit_depth_tvd": "f",
+        "data.bit_rpm": "f",
+        "data.differential_pressure": "f",
+        "data.downhole_torque": "f",
+        "data.downhole_weight_on_bit": "f",
+        "data.hole_depth": "f",
+        "data.hole_depth_tvd": "f",
+        "data.predicted_hookload": "f",
+        "data.predicted_surface_torque": "f",
+        "data.status": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_second",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Torque and Drag Predictions (Real-Time T&D Predictions)"
+    },
+    "torque-and-drag.stress": {
+      "desc": "Von Mises stress calculations along the drillstring. This collection contains combined stress calculations (axial, torsional, and bending) at each point along the drill string, compared to yield stress limits. Essential for preventing drillstring failures.",
+      "doc": "drilling_datasets/torque_and_drag_stress.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.activity": "s",
+        "data.points": "a",
+        "timestamp": "l"
+      },
+      "freq": "per_calculation",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Torque and Drag Stress (Von Mises Stress Analysis)"
+    },
+    "torque-and-drag.torque": {
+      "desc": "Torque calculations along the drillstring. This collection contains calculated torque values at each point along the drill string, along with torsional yield limits for comparison. Essential for preventing twist-offs and optimizing rotary drilling parameters.",
+      "doc": "drilling_datasets/torque_and_drag_torque.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.activity": "s",
+        "data.points": "a",
+        "timestamp": "l"
+      },
+      "freq": "per_calculation",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Torque and Drag Torque (Drillstring Torque Analysis)"
+    },
+    "torque-and-drag.torque-trend": {
+      "desc": "Torque trend analysis data providing calculated torque curves (broomstick charts) for rotary operations at various friction factors. Enables comparison of actual surface torque with modeled predictions for T&D calibration.",
+      "doc": "drilling_datasets/torque_and_drag_torque_trend.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.config": "o",
+        "data.curves": "o",
+        "data.hole_depth": "f",
+        "data.is_extended": "b",
+        "timestamp": "l"
+      },
+      "freq": "per_update",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "Torque and Drag Torque Trend (Torque Broomstick Data)"
+    },
+    "wireline.activity.summary-stage": {
+      "desc": "Stage-level wireline activity summary providing activity breakdown during wireline operations per stage.",
+      "doc": "completions_datasets/wireline_activity_summary_stage.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.activities": "a",
+        "stage_number": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_stage",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "stage_number"
+      ],
+      "title": "Wireline Activity Summary Stage (Wireline Activity Breakdown)"
+    },
+    "wireline.stage-times": {
+      "desc": "Wireline stage timing and duration data. This collection provides start time, end time, and duration for wireline operations per stage.",
+      "doc": "completions_datasets/wireline_stage_times.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.stage_duration": "i",
+        "data.stage_end": "l",
+        "data.stage_start": "l",
+        "stage_number": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_stage",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "stage_number"
+      ],
+      "title": "Wireline Stage Times (Wireline Timing Data)"
+    },
+    "wireline.wits": {
+      "desc": "Real-time WITS data for wireline operations. This collection contains sensor measurements during wireline perforating and logging operations including depth, tension, speed, and CCL (casing collar locator) data.",
+      "doc": "completions_datasets/wireline_wits.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.cable_tension": "f",
+        "data.ccl": "f",
+        "data.gamma_ray": "f",
+        "data.line_speed": "f",
+        "data.wireline_depth": "f",
+        "stage_number": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_second",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "stage_number"
+      ],
+      "title": "Wireline WITS (Real-Time Wireline Data)"
+    },
+    "wireline.wits.summary-1m": {
+      "desc": "1-minute aggregated wireline WITS data. This collection provides statistical summaries of wireline parameters over 1-minute intervals for trend analysis.",
+      "doc": "completions_datasets/wireline_wits_summary_1m.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.max": "o",
+        "data.mean": "o",
+        "data.min": "o",
+        "stage_number": "i",
+        "timestamp": "l"
+      },
+      "freq": "per_minute",
+      "group": "completions",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "stage_number"
+      ],
+      "title": "Wireline WITS Summary 1m (1-Minute Wireline Data)"
+    },
+    "wits": {
+      "desc": "Real-time drilling data captured from the rig while drilling or performing other operations. This collection contains instantaneous sensor measurements recorded every second. Use it for operational monitoring, performance analysis, and context about rig state/activity.",
+      "doc": "drilling_datasets/wits.md",
+      "fields": {
+        "asset_id": "i",
+        "data.bit_depth": "f",
+        "data.block_height": "f",
+        "data.diff_press": "f",
+        "data.gamma_ray": "f",
+        "data.hole_depth": "f",
+        "data.hook_load": "f",
+        "data.mud_flow_in": "f",
+        "data.rop": "f",
+        "data.rotary_rpm": "f",
+        "data.rotary_torque": "f",
+        "data.standpipe_pressure": "f",
+        "data.state": "s",
+        "data.weight_on_bit": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_second",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "WITS (Real-Time Drilling Data)"
+    },
+    "wits.summary-1ft": {
+      "desc": "One-foot depth-based aggregated WITS data. This collection contains WITS sensor measurements aggregated by depth intervals (1-foot increments) rather than time intervals. Use this dataset for depth-based analysis, formation correlation, geosteering, and scenarios where drilling parameters need to be indexed by depth rather than time.",
+      "doc": "drilling_datasets/wits_summary_1ft.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.bit_depth": "f",
+        "data.diff_press": "f",
+        "data.gamma_ray": "f",
+        "data.hole_depth": "f",
+        "data.hole_depth_max": "f",
+        "data.hole_depth_min": "f",
+        "data.hook_load": "f",
+        "data.mud_flow_in": "f",
+        "data.rop": "f",
+        "data.rotary_rpm": "f",
+        "data.rotary_torque": "f",
+        "data.standpipe_pressure": "f",
+        "data.state": "s",
+        "data.state_max": "s",
+        "data.weight_on_bit": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_foot",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id",
+        "data.hole_depth"
+      ],
+      "title": "WITS Summary 1-Foot (Depth-Based Aggregated Data)"
+    },
+    "wits.summary-1m": {
+      "desc": "One-minute aggregated WITS data for performance analysis. This collection contains WITS sensor measurements aggregated over 1-minute intervals, providing statistical summaries (min, max, average) of drilling parameters. Use this dataset when you need lower-resolution data for trend analysis, dashboards, or when processing large time ranges where per-second granularity is not required.",
+      "doc": "drilling_datasets/wits_summary_1m.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.bit_depth": "f",
+        "data.diff_press": "f",
+        "data.entry_at": "l",
+        "data.gamma_ray": "f",
+        "data.hole_depth": "f",
+        "data.hook_load": "f",
+        "data.mud_flow_in": "f",
+        "data.rop": "f",
+        "data.rotary_rpm": "f",
+        "data.rotary_torque": "f",
+        "data.standpipe_pressure": "f",
+        "data.state": "s",
+        "data.weight_on_bit": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_minute",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "WITS Summary 1-Minute (Aggregated Drilling Data)"
+    },
+    "wits.summary-30m": {
+      "desc": "Thirty-minute aggregated WITS data for trend analysis. This collection contains WITS sensor measurements aggregated over 30-minute intervals, providing statistical summaries of drilling parameters at a coarser resolution. Use this dataset for long-term trend analysis, days-vs-depth charts, and scenarios where high-level drilling progression is more important than detailed parameter analysis.",
+      "doc": "drilling_datasets/wits_summary_30m.md",
+      "fields": {
+        "asset_id": "i",
+        "company_id": "i",
+        "data.bit_depth": "f",
+        "data.diff_press": "f",
+        "data.hole_depth": "f",
+        "data.hook_load": "f",
+        "data.mud_flow_in": "f",
+        "data.rop": "f",
+        "data.rotary_rpm": "f",
+        "data.rotary_torque": "f",
+        "data.standpipe_pressure": "f",
+        "data.state": "s",
+        "data.true_vertical_depth": "f",
+        "data.weight_on_bit": "f",
+        "timestamp": "l"
+      },
+      "freq": "per_30_minutes",
+      "group": "drilling",
+      "keys": [
+        "timestamp",
+        "asset_id"
+      ],
+      "title": "WITS Summary 30-Minute (Aggregated Drilling Data)"
+    }
+  },
+  "type_abbrevs": {
+    "array": "a",
+    "boolean": "b",
+    "float": "f",
+    "int": "i",
+    "long": "l",
+    "object": "o",
+    "string": "s"
+  }
+}

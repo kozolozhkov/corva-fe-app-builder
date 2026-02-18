@@ -9,7 +9,6 @@ Use this skill to build Corva FE app plans and scaffolds with practical, proven 
 
 ## Path Placeholders
 
-- `<repo-root>`: root of the Corva mono-repo/workspace that contains `corva-ui`, `docs`, `demos`, `data-api`, and `corva-api`.
 - `<app-root>`: target FE app folder (contains `package.json` and `.env.local`).
 - `<skill-root>`: installed `corva-fe-app-builder` skill folder (contains `SKILL.md`, `references/`, and `scripts/`).
 
@@ -36,8 +35,8 @@ Use a calm, encouraging tone without becoming verbose.
 ## Smoother Development Improvements (enabled)
 
 1. Preflight checks are mandatory before planning/code and re-checked after each iteration.
-2. Intent-to-collection guidance is required (suggest 1-3 best candidates from codex-optimized).
-3. Golden app scaffold patterns from working vibe apps are the required baseline.
+2. Intent-to-collection guidance is required (suggest 1-3 best candidates from dataset catalog metadata).
+3. Bundled scaffold and data-hook patterns are the required baseline.
 4. One-question-at-a-time interaction is enforced.
 5. Real sample fetch must always be followed by an explicit field/data availability summary.
 6. Empty sample fetch must be called out explicitly as no data.
@@ -155,7 +154,8 @@ Do this instead:
 1. Ask only the minimum follow-up questions, one at a time:
 - which segment (`completions` or `drilling`)
 - which environment (`qa` or `prod`)
-2. Map user intent (what chart/widget they want) to 1-3 concrete collection options from `docs/codex-optimized/datasets.json` (repo root) for that segment.
+2. Map user intent (what chart/widget they want) to 1-3 concrete collection options using:
+- primary: `<skill-root>/references/dataset_descriptions/datasets.json`
 3. Select the best-fit collection internally based on user intent.
 Only ask the user to choose between options when confidence is low or multiple options are equally strong.
 4. Ask for provider. If it is a Corva dataset, default to `corva`. If unknown, ask for source/company name.
@@ -212,20 +212,20 @@ Do not use resources/list for corva_ui.
 ## Workflow
 
 1. Confirm app skeleton from bundled reference patterns.
-Use `references/app_patterns_from_repo.md` and `references/vibe_apps_working_patterns.md`.
+Use `references/app_scaffold_patterns.md` and `references/data_hook_patterns.md`.
 Do not require local demo/example apps; apply these patterns directly.
 
 2. Resolve `@corva/ui` MCP usage from local implementation.
-Use `references/mcp_usage_from_repo.md`.
+Use `references/mcp_usage.md`.
 Retrieve theme/component guidance for planned UI before styling decisions.
 
-3. Pick collection candidates from codex-optimized metadata first.
-Use `docs/codex-optimized/datasets.json` (repo root) via guidance in `references/data_api_get_catalog.md`.
+3. Pick collection candidates from dataset metadata.
+Use `<skill-root>/references/dataset_descriptions/datasets.json` first.
 
 4. Build request plan with asset-first queries.
 Use `references/client_method_to_endpoint_map.md`.
 
-5. Validate route truth from local APIs.
+5. Validate route truth from bundled API catalogs.
 Use:
 - `references/data_api_get_catalog.md`
 - `references/platform_api_get_catalog.md`
@@ -261,7 +261,7 @@ Use the Runtime Server Rule above on every iteration.
 - Query indexed collections with `asset_id` first.
 - Default query shape for Data API reads: `query={"asset_id": <id>}` plus explicit sort/limit.
 - Verify if the target dataset uses alternate keying (for example `metadata.asset_id`) before finalizing query shape.
-- Keep API method/endpoint mapping aligned with `corva-ui/src/clients/jsonApi/index.js` and `corva-ui/src/clients/api/apiCore.js` (repo root).
+- Keep API method/endpoint mapping aligned with `references/client_method_to_endpoint_map.md`.
 - Prefer `corvaDataAPI` for `/api/v1/data/...` calls.
 
 ## MCP Quick Use
@@ -273,8 +273,7 @@ For `@corva/ui` discovery, run these in order:
 4. `get_theme_docs` (mandatory for any UI/styling/color work) or `get_constants_docs` when styling/constants are required
 
 Tool names and schemas are sourced from:
-- `corva-ui/mcp-server/src/server/tools/index.ts` (repo root)
-- `corva-ui/mcp-server/src/server/tools/*.ts` (repo root)
+- `references/mcp_usage.md`
 
 ## Codegen Quality Gate (must pass)
 
@@ -317,12 +316,14 @@ After context gate is complete, produce:
 
 ## References
 
-- `references/app_patterns_from_repo.md`
-- `references/mcp_usage_from_repo.md`
+- `references/app_scaffold_patterns.md`
+- `references/mcp_usage.md`
 - `references/data_api_get_catalog.md`
 - `references/platform_api_get_catalog.md`
 - `references/client_method_to_endpoint_map.md`
-- `references/vibe_apps_working_patterns.md`
+- `references/data_hook_patterns.md`
+- `references/dataset_descriptions/README.md`
+- `references/dataset_descriptions/datasets.json`
 - `references/local_data_sampling_fallback.md`
 - `references/security_local_token_rules.md`
 - `references/frontend-layout-guardrails.md`
