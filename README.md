@@ -20,6 +20,7 @@ Default behavior:
 - provider defaults to `corva`
 - environment defaults to `prod`
 - collection is inferred from the first prompt, and the skill asks one options question only when inference confidence is low
+- if the app is built with mock data and `asset_id` is missing, the skill must end with one question asking for `asset_id` to rebuild with real-time Corva API data
 
 ## Use In Codex
 

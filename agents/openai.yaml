@@ -4,4 +4,4 @@ interface:
   icon_small: "./assets/small-icon.png"
   icon_large: "./assets/large-icon.png"
   brand_color: "#0F766E"
-  default_prompt: "Use $corva-fe-app-builder to quickly scaffold and run a Corva FE app, then optionally wire real data and run strict hardening checks before handoff."
+  default_prompt: "Use $corva-fe-app-builder to quickly scaffold and run a Corva FE app, then ask for asset_id to rebuild with real-time Corva API data, and optionally run strict hardening checks before handoff."

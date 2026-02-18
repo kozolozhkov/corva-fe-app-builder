@@ -24,7 +24,6 @@ Example:
 <skill-root>/scripts/sample_data.js \
   --app-root <app-root> \
   --base-url <data_api_base_url> \
-  --provider <provider> \
   --collection <collection> \
   --asset-id <asset_id> \
   --limit 10
@@ -32,6 +31,7 @@ Example:
 
 Optional overrides:
 
+- `--provider <provider>` only when you need a non-default provider (default is `corva`).
 - `--query-field metadata.asset_id` when the dataset is keyed there.
 - `--query-json '{"metadata.asset_id":123}'` for full custom query.
 - `--sort-json '{"timestamp":-1}'` to control ordering.

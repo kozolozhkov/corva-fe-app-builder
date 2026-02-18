@@ -53,6 +53,15 @@ Assume mixed experience levels; keep language plain and ask one question at a ti
 5. Start or recover local runtime with `scripts/start_or_restart_dev.sh`.
 6. Share local URL and remind user to keep terminal running.
 7. If first run is unauthenticated, remind login: `https://app.local.corva.ai`.
+8. If the app is currently using mock/simulated data, end the response with one upgrade question asking for `asset_id` so the app can be rebuilt to use real-time Corva API data.
+
+## Mock-To-Real Upgrade Prompt (mandatory)
+
+When fast-start output is mock/simulated and `asset_id` is still unknown, ask exactly one closing question:
+
+`If you provide an asset_id, I can rebuild this app to use real-time data from the Corva API. Do you want me to do that now?`
+
+Do not ask provider/environment in this step unless the user requests overrides.
 
 ## Real-Data Workflow (when requested)
 

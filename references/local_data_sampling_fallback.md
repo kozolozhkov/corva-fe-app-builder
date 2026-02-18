@@ -35,7 +35,7 @@ Keep `.env.local` simple:
 - do not require users to persist provider/collection/base URL/asset vars in that file
 
 Provider note:
-- For Corva-managed datasets, use `provider=corva`.
+- Default to `provider=corva` for Corva-managed datasets.
 - If unsure, ask user for expected source/company (for example halliburton, slb, liberty).
 
 If token is missing, explicitly state:
@@ -54,6 +54,9 @@ Recommendation:
 
 If `CORVA_ASSET_ID` is missing, explicitly state:
 `No asset_id is available, so real data samples cannot be fetched.`
+
+Then ask one upgrade question:
+`If you provide an asset_id, I can rebuild this app to use real-time data from the Corva API. Do you want me to do that now?`
 
 Optional:
 - `CORVA_LIMIT` (default `10`, must be `5..20`)

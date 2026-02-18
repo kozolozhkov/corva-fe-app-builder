@@ -21,6 +21,10 @@ If `asset_id` is missing, tell the user:
 
 `No asset_id is available yet, so real data samples cannot be fetched for the target asset.`
 
+If the app was built with mock/simulated data and `asset_id` is still missing, end with:
+
+`If you provide an asset_id, I can rebuild this app to use real-time data from the Corva API. Do you want me to do that now?`
+
 ## Mandatory Setup Question Flow
 
 Use this exact one-question-at-a-time order when strict setup is required:
@@ -63,6 +67,8 @@ If any field is missing, ask one question for the highest-priority missing item 
 2. token presence in `.env.local`
 3. `goal_intent` (only if unclear from the first prompt)
 4. `collection` choice (only when inference confidence is low)
+
+If mock/simulated mode was used in the last iteration and `asset_id` is still missing, prioritize that one `asset_id` upgrade question as the next step.
 
 ## Strict Preflight Sequence
 
