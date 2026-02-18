@@ -7,9 +7,11 @@ Use this reference when the run must meet strict reliability checks before codeg
 1. Confirm Corva UI MCP diagnostics pass (`mcp__corva_ui__get_diagnostics`).
 2. Confirm `<app-root>/.env.local` exists.
 3. Confirm `CORVA_BEARER_TOKEN` is set if real data sampling is required.
-4. Confirm `provider`, `environment`, `asset_id`, and `goal_intent`.
-5. Resolve `collection` from user input or intent mapping.
-6. Confirm `<app-root>` contains `package.json` and a `start` script.
+4. Set defaults unless user says otherwise: `provider=corva`, `environment=prod`.
+5. Confirm `asset_id`.
+6. Derive `goal_intent` from the first user prompt when possible.
+7. Resolve `collection` from intent mapping; ask user to choose only when confidence is low.
+8. Confirm `<app-root>` contains `package.json` and a `start` script.
 
 If token is missing, tell the user:
 
@@ -23,11 +25,8 @@ If `asset_id` is missing, tell the user:
 
 Use this exact one-question-at-a-time order when strict setup is required:
 
-1. `Step 1/5: What is the asset_id for the target well/asset?`
-2. `Step 2/5: Please confirm .env.local exists in the app root and includes CORVA_BEARER_TOKEN (yes/no).`
-3. `Step 3/5: Which provider should we use? If this is a Corva dataset, reply corva.`
-4. `Step 4/5: Which environment should we use (qa or prod)?`
-5. `Step 5/5: In plain language, what should this app show (for example frac stages, pump rate trend, or pressure vs time)?`
+1. `Step 1/2: What is the asset_id for the target well/asset?`
+2. `Step 2/2: Please confirm .env.local exists in the app root and includes CORVA_BEARER_TOKEN (yes/no).`
 
 If step 2 is `no` or `unsure`, show:
 
@@ -37,23 +36,33 @@ CORVA_BEARER_TOKEN=eyJhbGciOi...your_token_here...
 
 Then ask: `Please reply "ready" after this is set.`
 
+Do not ask provider/environment by default.
+
+- Use `provider=corva` unless the user explicitly requests another provider.
+- Use `environment=prod` unless the user explicitly requests another environment.
+
+Collection resolution behavior:
+
+1. Infer `collection` from the first prompt using dataset metadata.
+2. If confidence is high, proceed without asking.
+3. If confidence is low or options are equally likely, ask one question with 2-3 collection options.
+
 ## Required Context Gate
 
 Collect and confirm all fields before strict codegen:
 
-1. `environment`
-2. `provider`
+1. `environment` (default `prod`, unless user overrides)
+2. `provider` (default `corva`, unless user overrides)
 3. `asset_id`
-4. `goal_intent`
-5. `collection` (provided or inferred)
+4. `goal_intent` (from first prompt or one clarifying question)
+5. `collection` (inferred or chosen from options)
 
 If any field is missing, ask one question for the highest-priority missing item in this order:
 
 1. `asset_id`
 2. token presence in `.env.local`
-3. `provider`
-4. `environment`
-5. `goal_intent`
+3. `goal_intent` (only if unclear from the first prompt)
+4. `collection` choice (only when inference confidence is low)
 
 ## Strict Preflight Sequence
 
@@ -61,7 +70,7 @@ Run before planning/code and after every iteration:
 
 1. MCP health (`mcp__corva_ui__get_diagnostics`).
 2. Token check (`.env.local` + `CORVA_BEARER_TOKEN`).
-3. Context gate check (`environment`, `provider`, `asset_id`, `goal_intent`, `collection`).
+3. Context gate check (`environment`, `provider`, `asset_id`, `goal_intent`, `collection`) with defaults applied for provider/environment.
 4. Sampling check: if samples were fetched, verify field summary was presented and no-data state was explicit when applicable.
 5. Runtime check: FE server responds; restart if needed.
 6. Layout fit check after UI changes.

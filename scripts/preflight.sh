@@ -10,8 +10,8 @@ Options:
   --app-root <path>         App root directory (default: current directory)
   --strict                  Treat missing context/token as failures
   --asset-id <id>           Target asset id
-  --provider <name>         Data provider (for example: corva)
-  --environment <qa|prod>   Runtime environment
+  --provider <name>         Data provider (default: corva)
+  --environment <qa|prod>   Runtime environment (default: prod)
   --goal-intent <text>      User goal in plain language
   --collection <name>       Resolved dataset collection
   --help                    Show this help
@@ -21,8 +21,8 @@ USAGE
 APP_ROOT="$(pwd)"
 STRICT=0
 ASSET_ID=""
-PROVIDER=""
-ENVIRONMENT=""
+PROVIDER="corva"
+ENVIRONMENT="prod"
 GOAL_INTENT=""
 COLLECTION=""
 

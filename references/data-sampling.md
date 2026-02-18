@@ -9,7 +9,7 @@ Fetch a real sample for the target `provider` + `collection` + `asset_id`, then 
 ## Required Inputs
 
 1. Data API base URL (`--base-url`)
-2. `provider`
+2. `provider` (default `corva`)
 3. `collection`
 4. `asset_id` (or explicit query override)
 5. Bearer token (from `<app-root>/.env.local` or `--token`)

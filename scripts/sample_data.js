@@ -16,7 +16,7 @@ Options:
   --app-root <path>          App root directory (default: current directory)
   --token <token>            Bearer token (overrides env and .env.local)
   --base-url <url>           Data API base URL (required if env is not set)
-  --provider <name>          Provider (required)
+  --provider <name>          Provider (default: corva)
   --collection <name>        Collection (required)
   --asset-id <id>            Asset id (required unless --query-json is used)
   --query-field <path>       Query key for asset id (default: asset_id)
@@ -232,7 +232,7 @@ async function run() {
 
   const token = args.token || process.env.CORVA_BEARER_TOKEN || fileEnv.CORVA_BEARER_TOKEN;
   const baseUrlRaw = args['base-url'] || process.env.CORVA_DATA_API_BASE_URL || fileEnv.CORVA_DATA_API_BASE_URL;
-  const provider = args.provider || process.env.CORVA_PROVIDER || fileEnv.CORVA_PROVIDER;
+  const provider = args.provider || process.env.CORVA_PROVIDER || fileEnv.CORVA_PROVIDER || 'corva';
   const collection = args.collection || process.env.CORVA_COLLECTION || fileEnv.CORVA_COLLECTION;
   const assetId = args['asset-id'] || process.env.CORVA_ASSET_ID || fileEnv.CORVA_ASSET_ID;
 
@@ -247,9 +247,6 @@ async function run() {
   }
   if (!baseUrlRaw) {
     throw new Error('Missing base URL. Pass --base-url or set CORVA_DATA_API_BASE_URL.');
-  }
-  if (!provider) {
-    throw new Error('Missing provider. Pass --provider or set CORVA_PROVIDER.');
   }
   if (!collection) {
     throw new Error('Missing collection. Pass --collection or set CORVA_COLLECTION.');

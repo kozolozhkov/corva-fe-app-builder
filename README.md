@@ -15,6 +15,12 @@ A Codex skill to scaffold and iterate Corva FE apps quickly, then harden when ne
 2. `real-data`: resolve provider/collection/asset and validate with sample fetches.
 3. `hardening`: run strict preflight and styling/layout compliance checks.
 
+Default behavior:
+
+- provider defaults to `corva`
+- environment defaults to `prod`
+- collection is inferred from the first prompt, and the skill asks one options question only when inference confidence is low
+
 ## Use In Codex
 
 ```text
@@ -43,8 +49,6 @@ Restart Codex after installation or updates.
   --strict \
   --app-root <app-root> \
   --asset-id <asset_id> \
-  --provider <provider> \
-  --environment <qa|prod> \
   --goal-intent "<goal>" \
   --collection <collection>
 
@@ -55,7 +59,6 @@ Restart Codex after installation or updates.
 <skill-root>/scripts/sample_data.js \
   --app-root <app-root> \
   --base-url <data_api_base_url> \
-  --provider <provider> \
   --collection <collection> \
   --asset-id <asset_id>
 ```

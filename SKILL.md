@@ -20,6 +20,12 @@ Use this skill to get from app idea to running Corva FE app quickly, then harden
 
 Default to `fast-start` unless the user asks for stricter reliability gates.
 
+Default assumptions during setup:
+
+- `provider=corva` unless user instructs otherwise.
+- `environment=prod` unless user instructs otherwise.
+- infer `collection` from the first prompt; only ask a single options question when confidence is low.
+
 ## Communication Style
 
 Assume mixed experience levels; keep language plain and ask one question at a time.
@@ -50,7 +56,7 @@ Assume mixed experience levels; keep language plain and ask one question at a ti
 
 ## Real-Data Workflow (when requested)
 
-1. Collect and confirm: `environment`, `provider`, `asset_id`, `goal_intent`, and `collection`.
+1. Collect and confirm: `asset_id`, `goal_intent`, and `collection`; apply defaults `provider=corva` and `environment=prod` unless user overrides.
 2. Build endpoint plan using:
 - `references/client_method_to_endpoint_map.md`
 - `references/data_api_get_catalog.md`
@@ -80,8 +86,6 @@ Assume mixed experience levels; keep language plain and ask one question at a ti
   --strict \
   --app-root <app-root> \
   --asset-id <asset_id> \
-  --provider <provider> \
-  --environment <qa|prod> \
   --goal-intent "<goal>" \
   --collection <collection>
 ```
@@ -98,7 +102,6 @@ Assume mixed experience levels; keep language plain and ask one question at a ti
 <skill-root>/scripts/sample_data.js \
   --app-root <app-root> \
   --base-url <data_api_base_url> \
-  --provider <provider> \
   --collection <collection> \
   --asset-id <asset_id>
 ```
