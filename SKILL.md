@@ -211,11 +211,9 @@ Do not use resources/list for corva_ui.
 
 ## Workflow
 
-1. Confirm app skeleton from working demos.
+1. Confirm app skeleton from bundled reference patterns.
 Use `references/app_patterns_from_repo.md` and `references/vibe_apps_working_patterns.md`.
-Start from the closest golden baseline:
-- `demos/vibe_coded_sample_app` (repo root) for generic timeseries patterns
-- `demos/vibe_coded_demo_app` (repo root) for ROP/data-cleaning patterns
+Do not require local demo/example apps; apply these patterns directly.
 
 2. Resolve `@corva/ui` MCP usage from local implementation.
 Use `references/mcp_usage_from_repo.md`.

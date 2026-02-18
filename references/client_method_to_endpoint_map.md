@@ -48,7 +48,7 @@
 - `putDataAppStorage(provider, collection, id, item, queryParams)` -> `PUT /api/v1/data/{provider}/{collection}/{id}`
 - `postDataAppStorage(provider, collection, item)` -> `POST /api/v1/data/{provider}/{collection}`
 
-Used in working demos through `corvaDataAPI.get('/api/v1/data/...', params)`.
+Common usage pattern: `corvaDataAPI.get('/api/v1/data/...', params)`.
 
 ## Header/Token Behavior
 

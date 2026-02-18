@@ -1,64 +1,88 @@
-# App Patterns From Repo
+# App Scaffold Patterns
 
-## Source Files
-- `<repo-root>/demos/vibe_coded_sample_app/src/index.js`
-- `<repo-root>/demos/vibe_coded_sample_app/src/App.tsx`
-- `<repo-root>/demos/vibe_coded_sample_app/src/AppSettings.tsx`
-- `<repo-root>/demos/vibe_coded_sample_app/src/effects/useWitsData.ts`
-- `<repo-root>/demos/vibe_coded_demo_app/src/index.js`
-- `<repo-root>/demos/vibe_coded_demo_app/src/App.tsx`
-- `<repo-root>/demos/vibe_coded_demo_app/src/AppSettings.tsx`
-- `<repo-root>/demos/vibe_coded_demo_app/src/effects/useRopData.ts`
+Use this as the default scaffold blueprint when no local demo apps are available.
 
-## Proven Scaffold Shape
+## Recommended File Layout
 
-1. Export app entry as default object with `component` + `settings`.
-`<repo-root>/demos/vibe_coded_sample_app/src/index.js`
-`<repo-root>/demos/vibe_coded_demo_app/src/index.js`
+- `<app-root>/src/index.js`
+- `<app-root>/src/App.tsx`
+- `<app-root>/src/AppSettings.tsx`
+- `<app-root>/src/effects/useData.ts`
+- `<app-root>/src/components/*` (optional)
 
-2. Keep root default exports `App` and `AppSettings` unchanged (explicit warning comments in both apps).
+## Entry Contract
 
-3. Wrap UI with:
+Expose app component + settings as the default export.
+
+```js
+import App from './App';
+import AppSettings from './AppSettings';
+
+export default {
+  component: App,
+  settings: AppSettings,
+};
+```
+
+## App Shell Pattern
+
+Use Corva shell primitives and keep app-level context in the top component.
+
 - `AppContainer`
 - `AppHeader`
-- `useAppCommons` for `appKey`
-From:
-`<repo-root>/demos/vibe_coded_sample_app/src/App.tsx`
-`<repo-root>/demos/vibe_coded_demo_app/src/App.tsx`
+- `useAppCommons` (for app key and common context)
 
-4. Resolve asset from selected well list:
-- Build `wellsList` with `useMemo`
-- Use `wellsList[0]?.asset_id`
+## State Ownership Pattern
 
-5. Separate data logic into `effects/use*.ts` hook.
-The app component handles rendering states; the hook handles API and subscriptions.
+Keep responsibilities separate:
 
-## AppSettings Pattern
+1. `App.tsx`: rendering states + layout + props wiring.
+2. `effects/useData.ts`: initial fetch + realtime subscription + data normalization.
+3. `AppSettings.tsx`: settings controls and defaults merge.
 
-- Use `DEFAULT_SETTINGS` merge pattern:
-`const settings = { ...DEFAULT_SETTINGS, ...apiSettings };`
-- Update values via `onSettingChange(key, value)`.
-From:
-`<repo-root>/demos/vibe_coded_sample_app/src/AppSettings.tsx`
-`<repo-root>/demos/vibe_coded_demo_app/src/AppSettings.tsx`
+## Asset Resolution Pattern
 
-## Data Hook Pattern
+Resolve the target asset early and short-circuit fetch until it is known.
 
-From:
-- `<repo-root>/demos/vibe_coded_sample_app/src/effects/useWitsData.ts`
-- `<repo-root>/demos/vibe_coded_demo_app/src/effects/useRopData.ts`
+- derive selected asset from context/selection
+- pass `assetId` into data hook
+- render explicit "no asset selected" state when missing
 
-Common flow:
-1. Exit early when `assetId` is missing.
-2. Fetch initial window via `corvaDataAPI.get('/api/v1/data/...')`.
-3. Subscribe realtime via `socketClient.subscribe({ provider, dataset, assetId }, { onDataReceive })`.
-4. Return cleanup that calls `unsubscribe?.()`.
-5. Keep hook state: `data`, `loading`, `error` (+ optional `lastUpdated`).
+## Data Hook Baseline
 
-## Best Practices Derived From Working Implementations
+Use one hook per dataset/visualization and keep it deterministic.
 
-- Keep data query explicit: `limit`, `skip`, `sort`, `query`, optional `fields`.
-- Prefer ascending `timestamp` for chart rendering paths.
-- Filter invalid sentinel values in the hook (`-999.25` in demo ROP hook).
-- Deduplicate realtime points by timestamp before chart render.
-- Maintain clear rendering states: loading, error, no asset, content.
+1. Return early when `assetId` is missing.
+2. Fetch initial window with explicit params (`query`, `sort`, `limit`, `skip`, optional `fields`).
+3. Subscribe realtime with `socketClient.subscribe({ provider, dataset, assetId }, ...)`.
+4. Cleanup by calling `unsubscribe?.()`.
+5. Return stable shape: `{ data, loading, error, lastUpdated }`.
+
+## AppSettings Baseline
+
+Keep settings contract predictable.
+
+```ts
+const settings = { ...DEFAULT_SETTINGS, ...apiSettings };
+```
+
+- read from incoming `settings`
+- update through `onSettingChange(key, value)`
+- keep defaults minimal and typed
+
+## Rendering States Baseline
+
+Always implement these branches:
+
+- loading
+- error
+- no asset selected
+- empty/no-data
+- content
+
+## Data Hygiene Baseline
+
+- sort by time key before render
+- deduplicate by primary x-axis key (usually timestamp)
+- drop invalid/sentinel values when known
+- keep transformation logic inside the hook, not UI components

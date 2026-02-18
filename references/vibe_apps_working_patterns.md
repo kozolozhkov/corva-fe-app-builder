@@ -1,59 +1,92 @@
-# Vibe Apps Working Patterns
+# Working FE Data Patterns
 
-## Source Files
-- `<repo-root>/demos/vibe_coded_sample_app/src/App.tsx`
-- `<repo-root>/demos/vibe_coded_sample_app/src/effects/useWitsData.ts`
-- `<repo-root>/demos/vibe_coded_demo_app/src/App.tsx`
-- `<repo-root>/demos/vibe_coded_demo_app/src/effects/useRopData.ts`
+Use these patterns as the default implementation baseline for Corva FE apps.
+No local demo app files are required.
 
 ## Shared Flow
 
-1. Resolve active well list with `useMemo`.
-2. Extract `assetId` from selected well (`wellsList[0]?.asset_id`).
-3. Call custom hook with `{ assetId, limit }`.
-4. Render state branches:
+1. Resolve `assetId` from current app context.
+2. Call one data hook with explicit inputs (`assetId`, `provider`, `collection`, `limit`).
+3. Render state branches in this order:
 - loading
 - error
-- no asset selected
+- missing asset
+- no data
 - chart/content
 
-## Data Fetch Pattern
+## Initial Fetch Pattern
 
-Both hooks use:
-- `corvaDataAPI.get('/api/v1/data/{provider}/{dataset}/', params)`
-- params include `limit`, `skip`, `sort`, `query`
+Use `corvaDataAPI` with explicit query params.
 
-Sample app:
-- dataset: `wits.summary-6h`
-- provider: `corva`
-- query: `{"asset_id": assetId}`
+```ts
+const params = {
+  query: JSON.stringify({ asset_id: assetId }),
+  sort: JSON.stringify({ timestamp: 1 }),
+  limit,
+  skip: 0,
+};
 
-Demo app additionally uses:
-- `fields: 'timestamp,data.rop,data.state'`
+const { data } = await corvaDataAPI.get(
+  `/api/v1/data/${provider}/${collection}/`,
+  params
+);
+```
+
+Notes:
+- Keep query explicit and deterministic.
+- Validate `asset_id` vs `metadata.asset_id` from samples before finalizing.
 
 ## Realtime Pattern
 
-Both hooks subscribe via:
-`socketClient.subscribe({ provider, dataset, assetId }, { onDataReceive })`
+```ts
+const unsubscribe = socketClient.subscribe(
+  { provider, dataset: collection, assetId },
+  {
+    onDataReceive: (point) => {
+      // normalize, append, deduplicate, trim
+    },
+  }
+);
 
-Implementation notes:
-- Store `unsubscribe` callback in effect scope.
-- Cleanup by calling `unsubscribe?.()`.
-- Append incoming points and trim/deduplicate in hook state.
+return () => unsubscribe?.();
+```
 
-## Data Hygiene Pattern
+Notes:
+- Keep subscribe/unsubscribe inside one effect scope.
+- Normalize incoming records before merging into state.
 
-From `useRopData.ts`:
-- ignore invalid sentinel values (`-999.25`)
-- normalize record to chart point shape
-- deduplicate by timestamp
-- sort ascending by timestamp for rendering
+## Hook Contract Pattern
 
-## AppSettings Pattern
+Return a stable shape:
 
-Both demos use identical settings contract:
-- `settings` from props
-- merge with defaults
-- call `onSettingChange` on control updates
+- `data`
+- `loading`
+- `error`
+- `lastUpdated` (optional)
 
-Use this as a stable baseline for new Corva FE app scaffolds.
+This keeps UI components simple and predictable.
+
+## Data Quality Pattern
+
+Apply these transforms before render:
+
+1. drop invalid or sentinel values when applicable
+2. normalize records into chart-ready shape
+3. deduplicate on x-axis key
+4. sort ascending for chart rendering
+
+## UI Pattern
+
+Keep UI components presentational:
+
+- no API calls inside chart components
+- no socket logic inside chart components
+- all fetch/realtime logic in hooks
+
+## Settings Pattern
+
+Maintain one settings contract:
+
+- merge `DEFAULT_SETTINGS` with incoming settings
+- update values only through `onSettingChange`
+- keep settings values serializable and minimal
