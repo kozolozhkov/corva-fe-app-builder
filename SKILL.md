@@ -29,6 +29,7 @@ This skill follows the open Agent Skills format commonly used by [skills.sh](htt
 
 - `provider=corva` unless the user explicitly requests another provider.
 - `environment=prod` unless the user explicitly requests another environment.
+- `data_api_base_url=https://data.corva.ai` unless `--base-url` or `CORVA_DATA_API_BASE_URL` overrides it.
 - infer `collection` from first prompt intent; ask one options question only when confidence is low.
 
 ## Token Security (mandatory)
@@ -112,8 +113,10 @@ Run before planning/code and after each iteration:
 3. Token file check (`.env.local`, token presence, permissions).
 4. Sampling status check (sampled or inferred fallback explicitly reported).
 5. Runtime check (local app URL responds; restart if needed).
-6. Layout fit check after UI changes.
+6. Layout fit hard gate after UI changes (`scripts/layout_guardrail_check.sh` must pass).
 7. Corva styling compliance check after UI/styling changes.
+
+If check 6 fails, pause feature work and patch layout scroll ownership before continuing.
 
 ## Runtime Server Rule
 
@@ -153,9 +156,14 @@ Run before planning/code and after each iteration:
 ```bash
 <skill-root>/scripts/sample_data.js \
   --app-root <app-root> \
-  --base-url <data_api_base_url> \
   --collection <collection> \
   --asset-id <asset_id>
+```
+
+- Layout guardrail hard check (required after UI edits):
+
+```bash
+<skill-root>/scripts/layout_guardrail_check.sh --app-root <app-root>
 ```
 
 ## Strict References

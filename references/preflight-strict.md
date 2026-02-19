@@ -73,7 +73,7 @@ Fallbacks that are explicitly allowed:
 - if token + `asset_id` exist, sampling should be attempted.
 - if sampling skipped, fallback reason must be explicit.
 5. Runtime check: FE server responds; restart if needed.
-6. Layout fit check after UI changes.
+6. Layout fit hard gate after UI changes (`scripts/layout_guardrail_check.sh` must pass).
 7. Styling compliance check after UI/styling changes.
 
 If any required check fails, stop and ask one short unblock question.

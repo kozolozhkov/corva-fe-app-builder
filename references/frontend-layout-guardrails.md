@@ -43,6 +43,13 @@ Recommended chart options baseline:
 3. If content exceeds viewport, internal app scroll is available.
 4. No hidden bottom legend/toolbar content.
 5. Record `layout=pass|fail` in iteration status.
+6. Run `<skill-root>/scripts/layout_guardrail_check.sh --app-root <app-root>` and require `RESULT=pass`.
+
+## Hard Gate Policy
+
+1. If the layout guardrail check fails, do not continue feature work.
+2. Patch scroll ownership first (`AppContainer` content + CSS overflow/min-height).
+3. Re-run the guardrail script and proceed only after pass.
 
 ## Troubleshooting Order
 
