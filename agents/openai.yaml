@@ -4,4 +4,13 @@ interface:
   icon_small: "./assets/small-icon.png"
   icon_large: "./assets/large-icon.png"
   brand_color: "#0F766E"
-  default_prompt: "Use $corva-fe-app-builder to capture goal intent, ask for asset_id, attempt real sampling when token + asset_id are available, and otherwise scaffold with clearly labeled inferred mappings and local .env.local token setup guidance."
+  default_prompt: "Use $corva-fe-app-builder to capture goal intent, ask for asset_id, run MCP bootstrap/diagnostics if Corva tools are missing, attempt real sampling when token + asset_id are available, and always start/restart the local server with URL reporting."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "corva_ui"
+      description: "Corva UI MCP server used for diagnostics, component docs, and theme docs"
+
+policy:
+  allow_implicit_invocation: true

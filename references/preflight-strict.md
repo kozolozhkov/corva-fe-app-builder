@@ -67,6 +67,14 @@ Fallbacks that are explicitly allowed:
 ## Preflight Sequence (run each iteration)
 
 1. MCP health (`get_diagnostics` capability via host alias).
+If tools are missing or diagnostics fail, run:
+
+```bash
+<skill-root>/scripts/bootstrap_corva_ui_mcp.sh --workspace <workspace>
+```
+
+Then restart host and retry diagnostics.
+
 2. Token file check (`.env.local` presence, restricted permissions, token presence).
 3. Context check (`environment`, `provider`, `goal_intent`, `collection`) with defaults applied.
 4. Sampling state check:
@@ -80,11 +88,20 @@ If any required check fails, stop and ask one short unblock question.
 
 ## Runtime Server Rule
 
-1. Start FE server from app root with `yarn start` (or `scripts/start_or_restart_dev.sh`).
+1. Start FE server from app root with `scripts/start_or_restart_dev.sh`.
 2. Record local URL from logs (fallback `http://localhost:3000`).
 3. On first local run, remind login: `https://app.local.corva.ai`.
 4. Tell user to open URL and keep terminal running for live reload.
 5. Re-check URL every iteration; restart and report if down.
+6. Required command:
+
+```bash
+<skill-root>/scripts/start_or_restart_dev.sh --app-root <app-root>
+```
+
+Required reporting:
+- `STATUS=<running|restarted>`
+- `URL=<local-url>`
 
 ## Guided Setup Message Format
 

@@ -24,7 +24,8 @@ An open-format Agent Skill to scaffold and iterate Corva FE apps with a real-dat
 4. infer collection from intent (ask options only when confidence is low)
 5. attempt real sampling immediately when token + `asset_id` are available
 6. scaffold/build with `sampled` or `inferred` confidence labeling
-7. provide next unblock step if sampling was skipped
+7. start or restart local server and report URL/status
+8. provide next unblock step if sampling was skipped
 
 Default behavior:
 
@@ -32,6 +33,23 @@ Default behavior:
 - environment defaults to `prod`
 - codegen is allowed when token and/or `asset_id` is missing, but mapping must be labeled `inferred`
 - token handling is local-file only: never ask users to paste tokens in chat
+
+## First-Time Install Checklist (required)
+
+1. Install the skill in your host skill directory.
+2. Run MCP bootstrap in the target workspace:
+
+```bash
+<skill-root>/scripts/bootstrap_corva_ui_mcp.sh --workspace <workspace>
+```
+
+3. Restart host (Codex/Claude Code/Cursor).
+4. Verify Corva MCP tools are visible and diagnostics pass.
+5. On first build iteration, ensure runtime is started with:
+
+```bash
+<skill-root>/scripts/start_or_restart_dev.sh --app-root <app-root>
+```
 
 ## Use In Hosts
 
@@ -65,6 +83,9 @@ Restart your host after installation or updates.
 ## Script Quickstart
 
 ```bash
+# bootstrap MCP for first-time workspace setup
+<skill-root>/scripts/bootstrap_corva_ui_mcp.sh --workspace <workspace>
+
 # preflight
 <skill-root>/scripts/preflight.sh --app-root <app-root>
 
@@ -110,6 +131,7 @@ corva-fe-app-builder/
 │       ├── README.md
 │       └── datasets.json
 ├── scripts/
+│   ├── bootstrap_corva_ui_mcp.sh
 │   ├── preflight.sh
 │   ├── start_or_restart_dev.sh
 │   ├── sample_data.js

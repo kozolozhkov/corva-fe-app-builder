@@ -50,7 +50,12 @@ This skill follows the open Agent Skills format commonly used by [skills.sh](htt
 1. Run Corva UI diagnostics (`get_diagnostics` capability).
 - Codex alias: `mcp__corva_ui__get_diagnostics`
 - Other hosts (including Claude Code): use the alias exposed for `corva_ui.get_diagnostics`.
-2. If diagnostics fail, run `npx -p @corva/ui corva-ui-mcp-setup`.
+2. If diagnostics fail or Corva tools are missing from host tool list, run:
+
+```bash
+<skill-root>/scripts/bootstrap_corva_ui_mcp.sh --workspace <workspace>
+```
+
 3. If MCP config changed, require host restart, then run diagnostics again.
 4. Use Corva UI MCP tools directly through host aliases (`list_corva_ui`, `search_corva_ui`, `get_component_docs`, `get_theme_docs`, etc.).
 
@@ -66,6 +71,7 @@ This skill follows the open Agent Skills format commonly used by [skills.sh](htt
 - `sampled` when schema comes from real data sample.
 - `inferred` when schema comes from dataset definitions or heuristics.
 8. Start or recover runtime via `scripts/start_or_restart_dev.sh` and provide local URL instructions.
+9. Do not finish an implementation iteration without running runtime startup check and reporting `STATUS` + `URL`.
 
 ## Required Setup Sequence
 
@@ -125,6 +131,15 @@ If check 6 fails, pause feature work and patch layout scroll ownership before co
 3. On first local run, remind login: `https://app.local.corva.ai`.
 4. Tell user to open URL and keep terminal running for live reload.
 5. Re-check URL every iteration; restart and report if unavailable.
+6. Required command on first implementation iteration:
+
+```bash
+<skill-root>/scripts/start_or_restart_dev.sh --app-root <app-root>
+```
+
+Required output contract:
+- report `STATUS=<running|restarted>`
+- report `URL=<local-url>`
 
 ## Script Quickstart
 

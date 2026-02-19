@@ -5,38 +5,11 @@ Use this when the workspace contains `corva-ui` source and MCP server files.
 This reference is host-agnostic for Agent Skills hosts (Codex, Claude Code, Cursor, and similar tools).
 
 ## Source Files
+
 - Bundled MCP tool model in this skill (default)
 - Optional source-workspace files if available
 
-## Local Server Config In Repo
-
-Repo config file:
-`<workspace>/.mcp.json`
-
-Bootstrap helper command (from README):
-- `npx -p @corva/ui corva-ui-mcp-setup`
-
-After setup, normalize MCP command to the local binary:
-- `.mcp.json` / `.cursor/mcp.json`:
-  - `"command": "<workspace>/node_modules/.bin/corva-ui-mcp"`
-- `.codex/config.toml`:
-  - `[mcp_servers.corva_ui]`
-  - `command = "<workspace>/node_modules/.bin/corva-ui-mcp"`
-
-Example (`.mcp.json`):
-```json
-{
-  "mcpServers": {
-    "corva-ui": {
-      "command": "<workspace>/node_modules/.bin/corva-ui-mcp"
-    }
-  }
-}
-```
-
 ## Tool Catalog (Registered)
-
-From `tools/index.ts` and server registration:
 
 - `search_corva_ui`
 - `get_component_docs`
@@ -53,59 +26,52 @@ Use capability names first, then map to host aliases:
 
 1. Diagnostics capability: `get_diagnostics`
 - Codex alias: `mcp__corva_ui__get_diagnostics`
-- Claude Code / other hosts: use the alias exposed for `corva_ui.get_diagnostics`
+- Claude Code / other hosts: use alias for `corva_ui.get_diagnostics`
 2. Catalog capability: `list_corva_ui`
 3. Search capability: `search_corva_ui`
 4. Docs capabilities: `get_component_docs`, `get_hook_docs`, `get_theme_docs`, `get_constants_docs`, `get_client_docs`
 
-## Input Schema Summary
+## First-Time Bootstrap (required)
 
-1. `search_corva_ui`
-- required: `query`
-- optional: `type` (`all|component|hook|util|constant|client|permission|icon|hoc|type|testing|style`)
-- optional: `category` (`all|v2|v1`)
-- optional: `limit`
+If Corva MCP tools are missing from host tool list, run:
 
-2. `get_component_docs`
-- required: `name`
-- optional: `category` (`v2|v1`)
+```bash
+<skill-root>/scripts/bootstrap_corva_ui_mcp.sh --workspace <workspace>
+```
 
-3. `get_hook_docs`
-- required: `name`
+This script:
 
-4. `get_theme_docs`
-- optional: `section` (`palette|variables|all`)
+1. runs `npx -p @corva/ui corva-ui-mcp-setup` (unless skipped)
+2. writes `<workspace>/.mcp.json` with local command
+3. writes `<workspace>/.cursor/mcp.json` with local command
+4. updates `$CODEX_HOME/config.toml` (`mcp_servers.corva_ui.command`) when Codex config is available
 
-5. `list_corva_ui`
-- required: `type` (`components-v2|components-v1|hooks|utils|constants|clients|permissions|icons|hocs|types|testing|styles`)
+After running, restart the host and re-check diagnostics.
 
-6. `get_constants_docs`
-- required: `namespace` (namespace or constant name)
+## Workspace Config Shape
 
-7. `get_client_docs`
-- required: `name`
-- optional: `tag`
+Expected command:
 
-8. `get_diagnostics`
-- no input args
+`<workspace>/node_modules/.bin/corva-ui-mcp`
 
-## Recommended MCP Discovery Sequence
+Expected JSON shape (`.mcp.json` / `.cursor/mcp.json`):
 
-1. `list_corva_ui` (target category)
-2. `search_corva_ui` (term narrowing)
-3. `get_component_docs` / `get_hook_docs` / `get_client_docs`
-4. `get_theme_docs` / `get_constants_docs` if needed
+```json
+{
+  "mcpServers": {
+    "corva-ui": {
+      "command": "<workspace>/node_modules/.bin/corva-ui-mcp"
+    }
+  }
+}
+```
 
-## Server Health Bootstrap Gate
+## Server Health Gate
 
-1. Call Corva diagnostics (`get_diagnostics`) using the current host alias.
-2. If unavailable/timed out:
-- ensure `@corva/ui` is installed
-- run `npx -p @corva/ui corva-ui-mcp-setup`
-- normalize configs to local binary command (`node_modules/.bin/corva-ui-mcp`)
-The agent owns this recovery flow so the user does not need to manually start MCP.
-3. If config changed, require full host restart (Codex/Claude Code/Cursor).
-4. After restart, call diagnostics again.
+1. Call diagnostics (`get_diagnostics`) with host alias.
+2. If unavailable/timed out, run first-time bootstrap.
+3. Restart host if config changed.
+4. Call diagnostics again.
 5. Repeat diagnostics check after each iteration.
 
 ## Usage Boundary
@@ -115,6 +81,5 @@ The agent owns this recovery flow so the user does not need to manually start MC
 
 ## Notes
 
-- README states MCP support is available from `@corva/ui` `3.44.0`.
 - `get_client_docs` is the fastest way to inspect client methods + endpoint groupings before wiring data hooks.
 - Full source-workspace files are optional; this guide is usable with only `<app-root>` + `<skill-root>`.
