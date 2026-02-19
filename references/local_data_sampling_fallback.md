@@ -1,30 +1,33 @@
-# Local Data Sampling Fallback
+# Sampling Fallback Branch (Inferred)
 
-Use this only when the bundled dataset catalog and existing docs are insufficient for field-level confidence.
+Use this branch whenever real sampling cannot run yet (missing `asset_id`, missing token, or no-data sample).
 
 ## Source Files
-- `<skill-root>/references/dataset_descriptions/datasets.json` (bundled)
+
+- `<skill-root>/references/dataset_descriptions/datasets.json`
 - `<skill-root>/scripts/fetch_samples_with_env_token.sh`
 - `<skill-root>/scripts/infer_field_presence.js`
 
-## Step 1: Prefer dataset catalog first
+## Trigger Conditions
 
-Check `<skill-root>/references/dataset_descriptions/datasets.json` for:
-- group (`drilling` / `completions`)
-- keys
-- known fields and types
+Enter fallback when any condition is true:
 
-If query shape or required chart fields are still unclear, continue to sampling.
+1. `asset_id` is missing.
+2. `CORVA_BEARER_TOKEN` is missing in `.env.local`.
+3. Real sample request returns no records.
 
-## Step 2: Load local env values
+## Fallback Behavior Contract
 
-Put credentials in:
-`<app-root>/.env.local`
+1. Continue scaffolding/codegen with inferred field mapping.
+2. Mark schema confidence as `inferred`.
+3. Provide one next unblock question (`asset_id` or token setup).
+4. Explain that real sampling will replace inferred mapping once context is available.
 
-If the file is missing, ask the user to add it first and include at least:
-- `CORVA_BEARER_TOKEN=<token>`
+## Local Token Setup (no chat token sharing)
 
-Local-only setup helper (never ask user to paste token in chat):
+Put token in `<app-root>/.env.local`.
+
+If the file is missing, provide local-only helper:
 
 ```bash
 touch <app-root>/.env.local
@@ -32,42 +35,29 @@ chmod 600 <app-root>/.env.local
 # Add CORVA_BEARER_TOKEN in your local editor
 ```
 
-Keep `.env.local` simple:
-- only store `CORVA_BEARER_TOKEN`
-- do not require users to persist provider/collection/base URL/asset vars in that file
+Never ask users to paste token values into chat.
 
-Provider note:
-- Default to `provider=corva` for Corva-managed datasets.
-- If unsure, ask user for expected source/company (for example halliburton, slb, liberty).
+## Required User-Facing Warnings
 
-If token is missing, explicitly state:
-`No bearer token is set yet. We can continue planning, but real data sampling is unavailable and field mapping will be inferred until a token is added.`
-Then ask for local setup completion only: `Please reply "ready" after you set CORVA_BEARER_TOKEN in .env.local locally.`
+1. Missing `asset_id` warning:
+`Field mapping is inferred because asset_id is missing; providing asset_id will improve accuracy and smoother development.`
+2. Missing token warning:
+`Real data sampling is unavailable because CORVA_BEARER_TOKEN is not set in .env.local.`
+3. No-data warning:
+`No data was found for this collection and asset in the selected environment.`
 
-Required runtime env vars for the fetch script:
-- `CORVA_BEARER_TOKEN`
-- `CORVA_DATA_API_BASE_URL`
-- `CORVA_PROVIDER`
-- `CORVA_COLLECTION`
-- `CORVA_ASSET_ID`
+## Transition Back to Real Sampling
 
-Recommendation:
-- source token from `.env.local`
-- pass the non-secret runtime vars inline in the command
+When token and `asset_id` become available:
 
-If `CORVA_ASSET_ID` is missing, explicitly state:
-`No asset_id is available, so real data samples cannot be fetched.`
+1. Run real sampling immediately.
+2. Re-run field summary from sample data.
+3. Replace inferred-only assumptions with sampled mappings.
+4. Call out any schema differences discovered after sampling.
 
-Then ask one upgrade question:
-`If you provide an asset_id, I can rebuild this app to use real-time data from the Corva API. Do you want me to do that now?`
+## Optional Detailed Sampling Path
 
-Optional:
-- `CORVA_LIMIT` (default `10`, must be `5..20`)
-- `CORVA_FIELDS`
-- `CORVA_SORT`
-- `CORVA_QUERY` (optional override for nested keys such as `metadata.asset_id`)
-
-## Step 3: Fetch sample rows
+If you need lower-level sampling manually:
 
 ```bash
 set -a
@@ -79,56 +69,6 @@ CORVA_PROVIDER="corva" \
 CORVA_COLLECTION="wits.summary-6h" \
 CORVA_ASSET_ID="12345" \
 <skill-root>/scripts/fetch_samples_with_env_token.sh > /tmp/corva_samples.json
-```
 
-If `/tmp/corva_samples.json` contains zero records (for example `[]` or `{ "data": [] }`), stop sampling flow and explicitly tell the user:
-`No data was found for this collection and asset in the selected environment.`
-
-Then suggest the next minimal step (one at a time), for example:
-1. confirm `asset_id`
-2. try another collection
-3. try another environment
-
-## Step 4: Infer field presence
-
-```bash
 node <skill-root>/scripts/infer_field_presence.js /tmp/corva_samples.json
 ```
-
-Output columns:
-- flattened field path
-- presence ratio
-- present records / total records
-- inferred type union
-- nullability hint
-
-Then enrich the output with field meaning notes:
-- For each field path, add a short plain-language description of what it represents.
-- Mark meaning confidence as `documented` (from metadata/docs) or `inferred` (from name + sample values).
-
-## Step 5: Mandatory User-Facing Field Summary
-
-After Step 4, always show the user a field/data availability summary.
-
-Minimum required content:
-1. Total sampled records count.
-2. Top-level fields present.
-3. Flattened field list with presence ratio, inferred types, and nullability.
-4. Field-by-field meaning/explanation in plain language with confidence label (`documented` or `inferred`).
-5. Explicit callouts for fields required by planned UI that are missing or sparse.
-
-Do not continue as if schema is certain without presenting this summary.
-
-## Weak-Coverage Warning Rules (must report)
-
-Raise explicit warnings in planning output when any condition is true:
-1. Sample size `< 5` records.
-2. Required UI field has presence ratio `< 0.8`.
-3. Required UI field type union is ambiguous (for example `number|string`).
-4. Asset key mismatch risk:
-- top-level `asset_id` sparse/missing
-- nested `metadata.asset_id` present
-
-If warnings exist, say query shape is provisional and request either:
-- larger sample window, or
-- explicit dataset contract confirmation.

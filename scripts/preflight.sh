@@ -99,7 +99,7 @@ context_check() {
   if [[ "$STRICT" -eq 1 ]]; then
     fail "$label is required in --strict mode"
   else
-    warn "$label is not set (allowed in fast-start mode)"
+    warn "$label is not set (using inferred fallback mapping)"
   fi
 }
 
@@ -176,7 +176,7 @@ else
   if [[ "$STRICT" -eq 1 ]]; then
     fail ".env.local is required in --strict mode"
   else
-    warn ".env.local not found (mock mode is still possible)"
+    warn ".env.local not found (real sampling unavailable; inferred fallback is possible)"
   fi
 fi
 

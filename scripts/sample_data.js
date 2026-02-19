@@ -247,7 +247,7 @@ async function run() {
 
   if (!token) {
     throw new Error(
-      'Missing bearer token in local environment. Set CORVA_BEARER_TOKEN in .env.local and re-run.'
+      'Missing bearer token in local environment. Set CORVA_BEARER_TOKEN in .env.local locally and re-run (do not share tokens in chat).'
     );
   }
   if (!baseUrlRaw) {

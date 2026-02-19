@@ -1,41 +1,36 @@
-# Strict Preflight
+# Required Preflight for Reliable Real-Data Wiring
 
-Use this reference when the run must meet strict reliability checks before codegen or final handoff.
+Use this reference to enforce reliable setup, sampling, and reporting before final handoff.
 
-## Before Build Checklist
+## Required Checks Before Reliable Real-Data Wiring
 
 1. Confirm Corva UI MCP diagnostics pass (`get_diagnostics` capability; Codex alias is `mcp__corva_ui__get_diagnostics`).
 2. Confirm `<app-root>/.env.local` exists.
-3. Confirm `CORVA_BEARER_TOKEN` is set if real data sampling is required.
-4. Set defaults unless user says otherwise: `provider=corva`, `environment=prod`.
-5. Confirm `asset_id`.
-6. Derive `goal_intent` from the first user prompt when possible.
-7. Resolve `collection` from intent mapping; ask user to choose only when confidence is low.
+3. Confirm `CORVA_BEARER_TOKEN` is set when real sampling is attempted.
+4. Apply defaults unless user overrides: `provider=corva`, `environment=prod`.
+5. Confirm `asset_id` early.
+6. Derive `goal_intent` from user prompt.
+7. Resolve `collection` from intent mapping (ask options only when confidence is low).
 8. Confirm `<app-root>` contains `package.json` and a `start` script.
 
 If token is missing, tell the user:
 
-`No bearer token is set yet. We can continue planning, but real data sampling is unavailable and field mapping will be inferred until a token is added.`
-Then ask the user to create/update `<app-root>/.env.local` locally and reply `ready`.
+`No bearer token is set yet. We can continue scaffolding with inferred mapping, but real data sampling is unavailable until CORVA_BEARER_TOKEN is set in .env.local.`
+
+Then ask user to update `<app-root>/.env.local` locally and reply `ready`.
 
 Never ask the user to paste token values into chat.
 
 If `asset_id` is missing, tell the user:
 
-`No asset_id is available yet, so real data samples cannot be fetched for the target asset.`
+`Field mapping is inferred because asset_id is missing; providing asset_id will improve accuracy and smoother development.`
 
-If the app was built with mock/simulated data and `asset_id` is still missing, end with:
-
-`If you provide an asset_id, I can rebuild this app to use real-time data from the Corva API. Do you want me to do that now?`
-
-## Mandatory Setup Question Flow
-
-Use this exact one-question-at-a-time order when strict setup is required:
+## Required Setup Questions (one-at-a-time)
 
 1. `Step 1/2: What is the asset_id for the target well/asset?`
 2. `Step 2/2: Please create or update .env.local locally so it contains CORVA_BEARER_TOKEN, then reply "ready" (do not paste the token in chat).`
 
-If the user is blocked on step 2, show:
+If the user needs help for step 2, show:
 
 ```bash
 touch <app-root>/.env.local
@@ -45,70 +40,64 @@ chmod 600 <app-root>/.env.local
 
 Then ask: `Please reply "ready" after this is set locally.`
 
-Do not ask provider/environment by default.
+## Context and Fallback Contract
 
-- Use `provider=corva` unless the user explicitly requests another provider.
-- Use `environment=prod` unless the user explicitly requests another environment.
+Required context fields:
 
-Collection resolution behavior:
+1. `environment` (default `prod`)
+2. `provider` (default `corva`)
+3. `asset_id` (preferred; fallback allowed)
+4. `goal_intent`
+5. `collection` (inferred or chosen)
 
-1. Infer `collection` from the first prompt using dataset metadata.
-2. If confidence is high, proceed without asking.
-3. If confidence is low or options are equally likely, ask one question with 2-3 collection options.
+Fallbacks that are explicitly allowed:
 
-## Required Context Gate
+1. No `asset_id`:
+- continue with inferred collection/fields from dataset metadata.
+- mark confidence as `inferred`.
+- ask one next unblock question for `asset_id`.
+2. No token:
+- continue with inferred scaffold.
+- state that real sampling is unavailable until `.env.local` is set.
+- ask one next unblock question for local token setup.
+3. Sample no-data:
+- state exact message: `No data was found for this collection and asset in the selected environment.`
+- continue with inferred mapping and risk notes.
 
-Collect and confirm all fields before strict codegen:
-
-1. `environment` (default `prod`, unless user overrides)
-2. `provider` (default `corva`, unless user overrides)
-3. `asset_id`
-4. `goal_intent` (from first prompt or one clarifying question)
-5. `collection` (inferred or chosen from options)
-
-If any field is missing, ask one question for the highest-priority missing item in this order:
-
-1. `asset_id`
-2. token presence in `.env.local`
-3. `goal_intent` (only if unclear from the first prompt)
-4. `collection` choice (only when inference confidence is low)
-
-If mock/simulated mode was used in the last iteration and `asset_id` is still missing, prioritize that one `asset_id` upgrade question as the next step.
-
-## Strict Preflight Sequence
-
-Run before planning/code and after every iteration:
+## Preflight Sequence (run each iteration)
 
 1. MCP health (`get_diagnostics` capability via host alias).
-2. Token check (`.env.local` + `CORVA_BEARER_TOKEN`).
-3. Context gate check (`environment`, `provider`, `asset_id`, `goal_intent`, `collection`) with defaults applied for provider/environment.
-4. Sampling check: if samples were fetched, verify field summary was presented and no-data state was explicit when applicable.
+2. Token file check (`.env.local` presence, restricted permissions, token presence).
+3. Context check (`environment`, `provider`, `goal_intent`, `collection`) with defaults applied.
+4. Sampling state check:
+- if token + `asset_id` exist, sampling should be attempted.
+- if sampling skipped, fallback reason must be explicit.
 5. Runtime check: FE server responds; restart if needed.
 6. Layout fit check after UI changes.
 7. Styling compliance check after UI/styling changes.
 
-If any strict preflight check fails, stop codegen and ask one short unblock question.
+If any required check fails, stop and ask one short unblock question.
 
-## Runtime Server Rule (strict)
+## Runtime Server Rule
 
 1. Start FE server from app root with `yarn start` (or `scripts/start_or_restart_dev.sh`).
 2. Record local URL from logs (fallback `http://localhost:3000`).
 3. On first local run, remind login: `https://app.local.corva.ai`.
-4. Tell user to open the URL and keep terminal running for live reload.
-5. Re-check URL every iteration; if down, restart and report restart status.
+4. Tell user to open URL and keep terminal running for live reload.
+5. Re-check URL every iteration; restart and report if down.
 
 ## Guided Setup Message Format
 
-When strict setup context is incomplete, each response must contain:
+When setup is incomplete, each response must contain:
 
 1. One short step line.
 2. Exactly one question.
 3. Optional helper note only when needed.
 
-Do not include status blocks, endpoint plans, or runtime URLs while strict setup is incomplete.
+Do not include status blocks, endpoint plans, or runtime URLs while setup is incomplete.
 
 ## Iteration Status Contract
 
-When context is complete and strict mode is active, include one compact status line:
+When context is complete, include one compact status line:
 
-`MCP=<pass/fail> | Token=<present/missing> | asset_id=<known/missing> | sample=<not-run/has-data/no-data> | server=<running/restarted/not-running> | layout=<pass/fail>`
+`MCP=<pass/fail> | Token=<present/missing> | asset_id=<known/missing> | sample=<has-data/no-data/inferred> | server=<running/restarted/not-running> | layout=<pass/fail>`

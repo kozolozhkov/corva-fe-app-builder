@@ -1,7 +1,7 @@
 interface:
   display_name: "Corva FE App Builder"
-  short_description: "Open-format Corva FE app builder with @corva/ui defaults, mock-to-real upgrade prompts, and optional hardening checks."
+  short_description: "Real-data-first Corva FE app builder with inferred fallback when token or asset context is missing."
   icon_small: "./assets/small-icon.png"
   icon_large: "./assets/large-icon.png"
   brand_color: "#0F766E"
-  default_prompt: "Use $corva-fe-app-builder to scaffold and run a Corva FE app quickly, then ask for asset_id to rebuild with real-time Corva API data, and keep token handling local-only via .env.local (never ask users to paste tokens in chat)."
+  default_prompt: "Use $corva-fe-app-builder to capture goal intent, ask for asset_id, attempt real sampling when token + asset_id are available, and otherwise scaffold with clearly labeled inferred mappings and local .env.local token setup guidance."

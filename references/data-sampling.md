@@ -1,10 +1,10 @@
 # Data Sampling
 
-Use this reference when wiring real data and validating schema confidence.
+Use this reference for real-data-first schema validation and reporting.
 
 ## Goal
 
-Fetch a real sample for the target `provider` + `collection` + `asset_id`, then report what fields are actually available.
+Fetch real samples for the target `provider` + `collection` + `asset_id`, then report field availability and confidence.
 
 ## Required Inputs
 
@@ -14,11 +14,16 @@ Fetch a real sample for the target `provider` + `collection` + `asset_id`, then 
 4. `asset_id` (or explicit query override)
 5. Bearer token from `<app-root>/.env.local` (or pre-exported `CORVA_BEARER_TOKEN` in local shell)
 
+## Sampling Trigger (real-data-first)
+
+Sampling is required before final field mapping whenever both conditions are true:
+
+1. `asset_id` is known.
+2. `CORVA_BEARER_TOKEN` is available in local environment.
+
 ## Preferred Script
 
 Use `scripts/sample_data.js`.
-
-Example:
 
 ```bash
 <skill-root>/scripts/sample_data.js \
@@ -31,19 +36,33 @@ Example:
 
 Optional overrides:
 
-- `--provider <provider>` only when you need a non-default provider (default is `corva`).
+- `--provider <provider>` when non-default provider is required.
 - `--query-field metadata.asset_id` when the dataset is keyed there.
 - `--query-json '{"metadata.asset_id":123}'` for full custom query.
 - `--sort-json '{"timestamp":-1}'` to control ordering.
 
-Security rule:
+## Security Rule
 
-- Never ask user to paste token values in chat.
-- Ask user to set/update `.env.local` locally and reply `ready`.
+1. Never ask user to paste token values in chat.
+2. Ask user to set/update `.env.local` locally and reply `ready`.
 
-## Reporting Contract (required when samples are fetched)
+## Fallback Branches (explicit)
 
-Report field availability in a field-by-field format:
+1. Missing `asset_id`:
+- skip sampling.
+- continue with inferred mapping from dataset definitions.
+- explicitly state: `Field mapping is inferred because asset_id is missing; providing asset_id will improve accuracy and smoother development.`
+2. Missing token:
+- skip sampling.
+- continue with inferred mapping.
+- explicitly state: `Real data sampling is unavailable because CORVA_BEARER_TOKEN is not set in .env.local.`
+3. No-data sample:
+- explicitly state: `No data was found for this collection and asset in the selected environment.`
+- continue with inferred mapping and call schema confidence provisional.
+
+## Reporting Contract (required)
+
+When samples are fetched, report field availability in field-by-field format:
 
 1. Flattened field path
 2. Meaning in plain language
@@ -53,26 +72,18 @@ Report field availability in a field-by-field format:
 6. Nullability
 7. Optional safe example value
 
-If meaning is not explicitly documented, mark it as `inferred`.
-
-## No-Data Handling (mandatory)
-
-If sample fetch returns zero records, explicitly state:
-
-`No data was found for this collection and asset in the selected environment.`
-
-Also state that downstream field mapping is provisional until data appears.
+If meaning is not documented, mark as `inferred`.
 
 ## Query Shape Guardrails
 
 1. Default Data API query shape: `query={"asset_id": <id>}` with explicit `sort` + `limit`.
-2. Confirm whether the target dataset uses `asset_id` or alternate keying (for example `metadata.asset_id`).
+2. Confirm whether dataset uses `asset_id` or alternate keying (for example `metadata.asset_id`).
 3. Keep client-to-endpoint mapping aligned with `references/client_method_to_endpoint_map.md`.
 4. Prefer `corvaDataAPI` for `/api/v1/data/...` calls.
 
 ## Fallback Scripts
 
-If `sample_data.js` cannot be used in the current environment:
+If `sample_data.js` cannot be used:
 
 1. Fetch with `scripts/fetch_samples_with_env_token.sh`.
 2. Summarize fields with `scripts/infer_field_presence.js`.

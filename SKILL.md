@@ -1,6 +1,6 @@
 ---
 name: corva-fe-app-builder
-description: "Build and iterate Corva FE apps with @corva/ui defaults, optional real-data wiring, and optional hardening checks. This skill should be used when users ask to scaffold or upgrade Corva widgets/apps, including mock-to-production upgrades for drilling or completions views."
+description: "Build and iterate Corva FE apps with @corva/ui defaults, real-data-first sampling, and safe inferred fallbacks when required context is missing. Use when users ask to scaffold or upgrade Corva widgets/apps for drilling or completions." 
 metadata:
   standard: agentskills-v1
   compatibility: codex,claude-code,cursor,agentskills-hosts
@@ -9,7 +9,7 @@ metadata:
 
 # Corva FE App Builder
 
-Use this skill to get from app idea to running Corva FE app quickly, then harden only when needed.
+Use this skill to move from app intent to a running Corva FE app with real-data-first behavior and explicit confidence reporting.
 
 ## Path Placeholders
 
@@ -20,97 +20,118 @@ Use this skill to get from app idea to running Corva FE app quickly, then harden
 
 This skill follows the open Agent Skills format commonly used by [skills.sh](https://skills.sh).
 
-1. Keep core workflow in `SKILL.md`, and keep deeper details in `references/`.
+1. Keep core workflow in `SKILL.md`, and deeper detail in `references/`.
 2. Prefer capability names over host-specific tool aliases.
 3. Use `scripts/` as deterministic fallbacks when MCP aliases differ across hosts.
 4. Treat `agents/openai.yaml` as optional host metadata; it is not required by non-OpenAI hosts.
 
-## Operating Modes
+## Defaults
 
-1. `fast-start` (default): scaffold UI, use mock data if needed, run app locally.
-2. `real-data`: wire provider/collection/asset and validate with sample fetches.
-3. `hardening`: run strict preflight and compliance checks before final delivery.
-
-Default to `fast-start` unless the user asks for stricter reliability gates.
-
-Default assumptions during setup:
-
-- `provider=corva` unless user instructs otherwise.
-- `environment=prod` unless user instructs otherwise.
-- infer `collection` from the first prompt; only ask a single options question when confidence is low.
+- `provider=corva` unless the user explicitly requests another provider.
+- `environment=prod` unless the user explicitly requests another environment.
+- infer `collection` from first prompt intent; ask one options question only when confidence is low.
 
 ## Token Security (mandatory)
 
 1. Never ask users to paste or send bearer tokens in chat.
 2. Require users to create/update `<app-root>/.env.local` locally and reply `ready`.
-3. Verify token presence by local file checks only (`.env.local` + `CORVA_BEARER_TOKEN`), never by asking for token text.
-4. Never echo token values in logs, code snippets, or responses.
+3. Verify token presence only via local file checks (`.env.local` + `CORVA_BEARER_TOKEN`).
+4. Never echo token values in logs, snippets, or assistant responses.
 
 ## Communication Style
 
-Assume mixed experience levels; keep language plain and ask one question at a time.
-
-1. Keep responses short and sequential.
-2. Avoid jargon; explain required technical terms in one sentence.
-3. Ask only one setup question per turn while context is incomplete.
-4. Keep setup messages compact: one short step line and one question.
+1. Use plain language and short sequential steps.
+2. Ask one question at a time while setup is incomplete.
+3. Keep setup messages compact: one step line, one question, optional helper line.
 
 ## MCP Bootstrap Gate (run first)
 
 1. Run Corva UI diagnostics (`get_diagnostics` capability).
 - Codex alias: `mcp__corva_ui__get_diagnostics`
-- Other Agent Skills hosts (including Claude Code): use the host-specific alias for `corva_ui.get_diagnostics`.
+- Other hosts (including Claude Code): use the alias exposed for `corva_ui.get_diagnostics`.
 2. If diagnostics fail, run `npx -p @corva/ui corva-ui-mcp-setup`.
-3. If MCP config changed, ask for a full host restart (Codex/Claude Code/Cursor), then run diagnostics again.
-4. Use Corva UI MCP tools directly (`list_corva_ui`, `search_corva_ui`, `get_component_docs`, `get_theme_docs`, etc.) through host aliases.
+3. If MCP config changed, require host restart, then run diagnostics again.
+4. Use Corva UI MCP tools directly through host aliases (`list_corva_ui`, `search_corva_ui`, `get_component_docs`, `get_theme_docs`, etc.).
 
-## Fast-Start Workflow (default)
+## Unified Workflow
 
-1. Confirm `<app-root>` (fallback to current working directory if clear).
-2. Ask for the user goal in plain language.
-3. Build scaffold from:
-- `references/app_scaffold_patterns.md`
-- `references/data_hook_patterns.md`
-4. Plan UI with Corva UI MCP (`get_theme_docs` is required before choosing colors).
-5. Start or recover local runtime with `scripts/start_or_restart_dev.sh`.
-6. Share local URL and remind user to keep terminal running.
-7. If first run is unauthenticated, remind login: `https://app.local.corva.ai`.
-8. If the app is currently using mock/simulated data, end the response with one upgrade question asking for `asset_id` so the app can be rebuilt to use real-time Corva API data.
+1. Confirm `<app-root>`.
+2. Capture `goal_intent` from the first user prompt.
+3. Ask/confirm `asset_id` early.
+4. Verify local token presence in `<app-root>/.env.local`.
+5. Resolve `collection` from dataset metadata and intent.
+6. Attempt real sampling immediately when both token and `asset_id` are available.
+7. Scaffold/build the app with confidence labels:
+- `sampled` when schema comes from real data sample.
+- `inferred` when schema comes from dataset definitions or heuristics.
+8. Start or recover runtime via `scripts/start_or_restart_dev.sh` and provide local URL instructions.
 
-## Mock-To-Real Upgrade Prompt (mandatory)
+## Required Setup Sequence
 
-When fast-start output is mock/simulated and `asset_id` is still unknown, ask exactly one closing question:
+Ask one question at a time in this order:
 
-`If you provide an asset_id, I can rebuild this app to use real-time data from the Corva API. Do you want me to do that now?`
+1. `Step 1/2: What is the asset_id for the target well/asset?`
+2. `Step 2/2: Please create or update .env.local locally so it contains CORVA_BEARER_TOKEN, then reply "ready" (do not paste the token in chat).`
 
-Do not ask provider/environment in this step unless the user requests overrides.
+If the user is blocked on step 2, show:
 
-## Real-Data Workflow (when requested)
+```bash
+touch <app-root>/.env.local
+chmod 600 <app-root>/.env.local
+# Add CORVA_BEARER_TOKEN in your local editor (do not paste it in chat)
+```
 
-1. Collect and confirm: `asset_id`, `goal_intent`, and `collection`; apply defaults `provider=corva` and `environment=prod` unless user overrides.
-2. Build endpoint plan using:
-- `references/client_method_to_endpoint_map.md`
-- `references/data_api_get_catalog.md`
-- `references/platform_api_get_catalog.md`
-3. Run `scripts/sample_data.js` for real sample fetch + field summary.
-4. Follow reporting contract in `references/data-sampling.md`.
+Then ask: `Please reply "ready" after this is set locally.`
 
-## Hardening Workflow (when requested or before sign-off)
+## Sampling and Fallback Rules
 
-1. Run `scripts/preflight.sh --strict` with required context arguments.
-2. Apply strict flow in `references/preflight-strict.md`.
-3. Apply layout fit rules from `references/frontend-layout-guardrails.md`.
-4. Apply styling checks from `references/styling-compliance.md`.
+Real-data-first trigger:
+
+- If `asset_id` and token are both available, sampling is required before final field mapping.
+
+Fallback contract:
+
+1. Missing `asset_id`:
+- continue with inferred collection/field mapping from dataset definitions.
+- explicitly warn: `Field mapping is inferred because asset_id is missing; providing asset_id will improve accuracy and smoother development.`
+- ask one next question for `asset_id`.
+2. Missing token:
+- continue with inferred mapping/scaffold.
+- explicitly warn: `Real data sampling is unavailable because CORVA_BEARER_TOKEN is not set in .env.local.`
+- ask user to set local `.env.local` and reply `ready`.
+3. Sampling returns no data:
+- explicitly state: `No data was found for this collection and asset in the selected environment.`
+- continue with inferred mapping and mark schema confidence as provisional.
+
+## Reliability and Quality Checks
+
+Run before planning/code and after each iteration:
+
+1. MCP diagnostics pass.
+2. Context check (`provider`, `environment`, `goal_intent`, `collection`) with defaults applied.
+3. Token file check (`.env.local`, token presence, permissions).
+4. Sampling status check (sampled or inferred fallback explicitly reported).
+5. Runtime check (local app URL responds; restart if needed).
+6. Layout fit check after UI changes.
+7. Corva styling compliance check after UI/styling changes.
+
+## Runtime Server Rule
+
+1. Start FE server from app root with `yarn start` (or `scripts/start_or_restart_dev.sh`).
+2. Record local URL from logs (fallback `http://localhost:3000`).
+3. On first local run, remind login: `https://app.local.corva.ai`.
+4. Tell user to open URL and keep terminal running for live reload.
+5. Re-check URL every iteration; restart and report if unavailable.
 
 ## Script Quickstart
 
-- Preflight checks:
+- Preflight check:
 
 ```bash
 <skill-root>/scripts/preflight.sh --app-root <app-root>
 ```
 
-- Strict preflight checks:
+- Compatibility strict preflight (`--strict` preserved):
 
 ```bash
 <skill-root>/scripts/preflight.sh \
@@ -137,11 +158,11 @@ Do not ask provider/environment in this step unless the user requests overrides.
   --asset-id <asset_id>
 ```
 
-## Strict References (detailed rules moved out of SKILL.md)
+## Strict References
 
-- `references/preflight-strict.md`: strict setup flow, context gate, preflight sequence, runtime rule, and iteration contract.
-- `references/data-sampling.md`: sample-fetch procedure, field-by-field reporting contract, and no-data handling.
-- `references/styling-compliance.md`: Corva theme token checks, component usage rules, and override policy.
+- `references/preflight-strict.md`: required checks and setup gating.
+- `references/data-sampling.md`: sampling trigger, reporting, and fallback handling.
+- `references/styling-compliance.md`: Corva theme/component compliance.
 
 ## References
 

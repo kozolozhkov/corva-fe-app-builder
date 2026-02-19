@@ -1,6 +1,6 @@
 # Corva FE App Builder Skill
 
-An open-format Agent Skill to scaffold and iterate Corva FE apps quickly, then harden when needed.
+An open-format Agent Skill to scaffold and iterate Corva FE apps with a real-data-first workflow.
 
 ## Open Format Notes
 
@@ -11,24 +11,27 @@ An open-format Agent Skill to scaffold and iterate Corva FE apps quickly, then h
 
 ## What This Skill Optimizes For
 
-- fast app bootstrap with `@corva/ui` defaults
-- optional real-data wiring and schema checks
-- optional strict hardening before handoff
+- early `asset_id` capture and real-data sampling when available
+- inferred fallback scaffolding when `asset_id` or token is missing
+- explicit confidence labeling (`sampled` vs `inferred`)
 - reusable scripts for preflight, runtime, and sampling
 
-## Operating Modes
+## Unified Flow
 
-1. `fast-start` (default): scaffold UI, use mock data when needed, start local app.
-2. `real-data`: resolve provider/collection/asset and validate with sample fetches.
-3. `hardening`: run strict preflight and styling/layout compliance checks.
+1. capture goal intent
+2. ask/confirm `asset_id`
+3. verify local `.env.local` token setup (`CORVA_BEARER_TOKEN`)
+4. infer collection from intent (ask options only when confidence is low)
+5. attempt real sampling immediately when token + `asset_id` are available
+6. scaffold/build with `sampled` or `inferred` confidence labeling
+7. provide next unblock step if sampling was skipped
 
 Default behavior:
 
 - provider defaults to `corva`
 - environment defaults to `prod`
-- collection is inferred from the first prompt, and the skill asks one options question only when inference confidence is low
-- if the app is built with mock data and `asset_id` is missing, the skill must end with one question asking for `asset_id` to rebuild with real-time Corva API data
-- token handling is local-file only: the skill must not ask users to paste tokens in chat, and instead asks users to set `CORVA_BEARER_TOKEN` in `.env.local` and reply `ready`
+- codegen is allowed when token and/or `asset_id` is missing, but mapping must be labeled `inferred`
+- token handling is local-file only: never ask users to paste tokens in chat
 
 ## Use In Hosts
 
@@ -36,7 +39,7 @@ Default behavior:
 # Codex
 $corva-fe-app-builder
 
-# Claude Code (same skill invocation style)
+# Claude Code
 $corva-fe-app-builder
 ```
 
@@ -62,10 +65,10 @@ Restart your host after installation or updates.
 ## Script Quickstart
 
 ```bash
-# quick preflight (fast-start compatible)
+# preflight
 <skill-root>/scripts/preflight.sh --app-root <app-root>
 
-# strict preflight (hardening)
+# compatibility strict preflight (--strict preserved)
 <skill-root>/scripts/preflight.sh \
   --strict \
   --app-root <app-root> \
